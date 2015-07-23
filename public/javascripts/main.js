@@ -33,7 +33,7 @@ angular.module("newApp", ["ngRoute"])
 // $(function () {
 // 	console.log('started');
 
-// 	var accessToken = "7~PBUEpEjESZrm0w9l91WZKk5gOtAggzGCN3s29hkCtnl1cdq6GLLY4Hocrr9iHSr0";
+// 	var accessToken = "7~blah, blah, blah";
 // 	var endpoint = 'https://canvas.instructure.com/api/v1/courses';
 
 // 	window.jsonCallback = function (res) {
