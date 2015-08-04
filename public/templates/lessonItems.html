@@ -1,0 +1,7 @@
+<table class="table table-striped">
+	<tr ng-repeat="contentItem in lessonItems">
+		<td>{{contentItem.title}}</td>
+		<td>{{contentItem.type}}</td>
+	</tr>
+</table>
+<span ng-repeat="i in pageNumbers" ng-click="loadPage(i)">{{i}}</span>
