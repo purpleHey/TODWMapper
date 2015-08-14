@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var request = require('request');
 var accessToken = require('./sessionToken.js');
+var cspFramework = require('./csp-framework')();
 var coursesEndpoint = 'https://canvas.instructure.com/api/v1';
 
 /* GET home page. */
@@ -23,6 +24,10 @@ router.use('/api/canvas', function (req, res, next) {
 			res.send(err);
 		}
 	});
+});
+
+router.get('/api/csp-framework', function (req, res) {
+    res.send(cspFramework);
 });
 
 module.exports = router;
