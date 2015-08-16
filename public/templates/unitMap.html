@@ -1,0 +1,29 @@
+<div class="container">
+  <h2>Unit Map</h2>
+
+  <form role="form" ng-submit="addLOs()">
+    <div class="panel panel-primary" ng-repeat="lo in unitLOs">
+      <div class="panel-heading">{{lo.loID}} - {{lo.description}}
+      </div>
+    </div>
+    <h2>CSP Framework</h2>
+    <div class="panel panel-default" ng-repeat="eu in eus">
+      <div class="panel-heading">{{eu.euID}} - {{eu.description}}
+          <button ng-click="element.isCollapsed = !element.isCollapsed">Show LO's</button>
+      </div>
+      <div collapse="element.isCollapsed">
+        <div ng-show="!element.isCollapsed" class="panel-body ">
+          <table ng-repeat="lo in eu.learningObjectives">
+            <tr>
+              <td>{{lo.loID}} - </td>
+              <td>{{lo.description}}</td>
+              <td>
+                <button ng-click="">Add</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
