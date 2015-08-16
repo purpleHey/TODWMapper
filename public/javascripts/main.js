@@ -4,6 +4,14 @@ angular.module("newApp", ["ngRoute"])
 		controller : "courses",
 		templateUrl : "/templates/courses.html"
 	})
+	.when("/course/unit", {
+		controller: "unitMap",
+		templateUrl: "/templates/unitMap.html"
+	})
+	.when("/course/new", {
+		controller: "newCourse",
+		templateUrl: "/templates/newCourse.html"
+	})
 	.when("/courses/:id", {
 		controller: "modules",
 		templateUrl : "/templates/modules.html"
@@ -20,6 +28,68 @@ angular.module("newApp", ["ngRoute"])
 	.success(function (courses) {
 		$scope.courses = courses;
 	})
+})
+
+.controller("unitMap", function($scope){
+	$scope.unitLOs = [
+	{
+		"loID": "1.1.1",
+		"description": "Apply a creative development process when creating computational artifacts. [P2]"
+	},
+	{
+		"loID": "1.2.3",
+		"description": "Create a new computational artifact by combining or modifying existing artifacts. [P2]"
+	}
+	];
+	$scope.eus = [
+		{
+			"euID": "1.1",
+			"description": "Creative development can be an essential process for creating computational artifacts.",
+			"isCollapsed": true,
+			"learningObjectives": [
+				{
+					"loID": "1.1.1",
+					"description": "Apply a creative development process when creating computational artifacts. [P2]",
+					"units": [1];
+				},
+			]
+	  },
+		{
+			"euID": "1.2",
+			"description": "Computing enables people to use creative development processes to create computational artifacts for creative expression or to solve a problem.",
+			"isCollapsed": true,
+			"learningObjectives": [
+				{
+					"loID": "1.2.1",
+					"description": "Create a computational artifact for creative expression. [P2]"					
+				},
+				{
+					"loID": "1.2.2",
+					"description": "Create a computational artifact using computing tools and techniques to solve a problem. [P2]"
+				},
+				{
+					"loID": "1.2.3",
+					"description": "Create a new computational artifact by combining or modifying existing artifacts. [P2]"
+				},
+				{
+					"loID": "1.2.4",
+					"description": "Collaborate in the creation of computational artifacts. [P6]"
+				},
+				{
+					"loID": "1.2.5",
+					"description": "Analyze the correctness, usability, functionality, and suitability of computational artifacts. [P4]"
+				}
+			]
+		}
+	];
+})
+
+.controller("newCourse", function($scope, courses){
+	$scope.course = {};
+	$scope.addCourse = function () {
+		courses.create($scope.course);
+	};
+
 })
 
 .controller("modules", function(modules, $scope, $routeParams){
@@ -47,11 +117,17 @@ angular.module("newApp", ["ngRoute"])
 	$scope.loadPage(1);
 })
 
+.factory("unitMap", function() {
+	
+})
 .factory("courses", function($http) {
 	return {
 		url: '/api/canvas/courses',
 		get: function() {
 			return $http.get(this.url)	
+		},
+		create: function(course) {
+			return $http.post(url, course);
 		}
 	};
 })
