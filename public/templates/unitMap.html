@@ -1,24 +1,34 @@
 <div class="container">
-  <h2>Unit Map</h2>
+  <h2>Unit 1 - Our Digital World - Learning Objectives Map</h2>
 
   <form role="form" ng-submit="addLOs()">
-    <div class="panel panel-primary" ng-repeat="lo in unitLOs">
-      <div class="panel-heading">{{lo.loID}} - {{lo.description}}
+    <div class="panel panel-primary">
+      <div class="panel-heading">Unit Overview</div>
+      <div class="panel-body">
+        Students explore the current state of technology and its role in our everyday lives.
       </div>
     </div>
+    <div class="panel panel-success" ng-repeat="lo in unitLOs">
+      <div class="panel-heading">{{lo.loID}} - {{lo.description}}</div>
+    </div>
     <h2>CSP Framework</h2>
+    <label>Search: <input ng-model="searchText"></label>
     <div class="panel panel-default" ng-repeat="eu in eus">
-      <div class="panel-heading">{{eu.euID}} - {{eu.description}}
-          <button ng-click="element.isCollapsed = !element.isCollapsed">Show LO's</button>
-      </div>
+    <div class="panel-heading">{{eu.euID}} - {{eu.description}}<span>
+            <button class="button pull-right" ng-click="element.isCollapsed = !element.isCollapsed">Show LO's</button></span>
+    </div>
       <div collapse="element.isCollapsed">
         <div ng-show="!element.isCollapsed" class="panel-body ">
-          <table ng-repeat="lo in eu.learningObjectives">
+          <table class="table" ng-repeat="lo in eu.learningObjectives | filter:searchText">
             <tr>
               <td>{{lo.loID}} - </td>
-              <td>{{lo.description}}</td>
+              <td class="text-left">{{lo.description}}</td>
               <td>
-                <button ng-click="">Add</button>
+<!--                 <button ng-click="toggle = !toggle">
+<button ng-click="toggle = !toggle"><span ng-show="toggle">Toggle to Off</span><span ng-hide="toggle">Toggle to On</span></button>
+ --><!-- <div class="box on" ng-show="toggle" ng-animate="'box'">On</div> -->
+
+                <button class="button pull-right" ng-click="toggleLOinUnit()">Add</button>
               </td>
             </tr>
           </table>

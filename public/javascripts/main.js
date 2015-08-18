@@ -31,6 +31,7 @@ angular.module("newApp", ["ngRoute"])
 })
 
 .controller("unitMap", function($scope){
+	$scope.unit = 1;
 	$scope.unitLOs = [
 	{
 		"loID": "1.1.1",
@@ -50,7 +51,7 @@ angular.module("newApp", ["ngRoute"])
 				{
 					"loID": "1.1.1",
 					"description": "Apply a creative development process when creating computational artifacts. [P2]",
-					"units": [1];
+					"units": [1]
 				},
 			]
 	  },
@@ -61,27 +62,43 @@ angular.module("newApp", ["ngRoute"])
 			"learningObjectives": [
 				{
 					"loID": "1.2.1",
-					"description": "Create a computational artifact for creative expression. [P2]"					
+					"description": "Create a computational artifact for creative expression. [P2]",
+					"units": []
 				},
 				{
 					"loID": "1.2.2",
-					"description": "Create a computational artifact using computing tools and techniques to solve a problem. [P2]"
+					"description": "Create a computational artifact using computing tools and techniques to solve a problem. [P2]",
+					"units": []
 				},
 				{
 					"loID": "1.2.3",
-					"description": "Create a new computational artifact by combining or modifying existing artifacts. [P2]"
+					"description": "Create a new computational artifact by combining or modifying existing artifacts. [P2]",
+					"units": [1]
 				},
 				{
 					"loID": "1.2.4",
-					"description": "Collaborate in the creation of computational artifacts. [P6]"
+					"description": "Collaborate in the creation of computational artifacts. [P6]",
+					"units": []
 				},
 				{
 					"loID": "1.2.5",
-					"description": "Analyze the correctness, usability, functionality, and suitability of computational artifacts. [P4]"
+					"description": "Analyze the correctness, usability, functionality, and suitability of computational artifacts. [P4]",
+					"units": []
 				}
 			]
 		}
 	];
+	$scope.toggleLOinUnit = function(){
+		if(this.lo.units.indexOf(this.unit) === -1) {
+			// THis LO is not in the unit, so add it.
+			this.lo.units.push(this.unit);
+			this.unitLOs.push(this.lo);
+		} else {
+			this.lo.units.pop(this.unit);
+			this.unitLOs.pop(this.lo);
+		}
+		console.log(this.lo);
+	};
 })
 
 .controller("newCourse", function($scope, courses){
@@ -118,8 +135,9 @@ angular.module("newApp", ["ngRoute"])
 })
 
 .factory("unitMap", function() {
-	
+
 })
+
 .factory("courses", function($http) {
 	return {
 		url: '/api/canvas/courses',
