@@ -30,65 +30,29 @@ angular.module("newApp", ["ngRoute"])
 	})
 })
 
-.controller("unitMap", function($scope){
+.controller("unitMap", function($scope, unitMap){
 	$scope.unit = 1;
-	$scope.unitLOs = [
-	{
-		"loID": "1.1.1",
-		"description": "Apply a creative development process when creating computational artifacts. [P2]"
-	},
-	{
-		"loID": "1.2.3",
-		"description": "Create a new computational artifact by combining or modifying existing artifacts. [P2]"
-	}
-	];
-	$scope.eus = [
-		{
-			"euID": "1.1",
-			"description": "Creative development can be an essential process for creating computational artifacts.",
-			"isCollapsed": true,
-			"learningObjectives": [
-				{
-					"loID": "1.1.1",
-					"description": "Apply a creative development process when creating computational artifacts. [P2]",
-					"units": [1]
-				},
-			]
-	  },
-		{
-			"euID": "1.2",
-			"description": "Computing enables people to use creative development processes to create computational artifacts for creative expression or to solve a problem.",
-			"isCollapsed": true,
-			"learningObjectives": [
-				{
-					"loID": "1.2.1",
-					"description": "Create a computational artifact for creative expression. [P2]",
-					"units": []
-				},
-				{
-					"loID": "1.2.2",
-					"description": "Create a computational artifact using computing tools and techniques to solve a problem. [P2]",
-					"units": []
-				},
-				{
-					"loID": "1.2.3",
-					"description": "Create a new computational artifact by combining or modifying existing artifacts. [P2]",
-					"units": [1]
-				},
-				{
-					"loID": "1.2.4",
-					"description": "Collaborate in the creation of computational artifacts. [P6]",
-					"units": []
-				},
-				{
-					"loID": "1.2.5",
-					"description": "Analyze the correctness, usability, functionality, and suitability of computational artifacts. [P4]",
-					"units": []
-				}
-			]
-		}
-	];
+	$scope.unitLOs = [];
+	// {
+	// 	"id": "1.1.1",
+	// 	"description": "Apply a creative development process when creating computational artifacts. [P2]"
+	// },
+	// {
+	// 	"id": "1.2.3",
+	// 	"description": "Create a new computational artifact by combining or modifying existing artifacts. [P2]"
+	// }
+	// ];
+	unitMap.get()
+	.success(function(unitMap) {
+		$scope.bigIdeas = unitMap;
+	})
+
 	$scope.toggleLOinUnit = function(){
+		if(this.lo.units === undefined) {
+			this.lo.units = [];
+			this.lo.units.push(this.unit);
+			this.unitLOs.push(this.lo);
+		}
 		if(this.lo.units.indexOf(this.unit) === -1) {
 			// THis LO is not in the unit, so add it.
 			this.lo.units.push(this.unit);
@@ -134,8 +98,13 @@ angular.module("newApp", ["ngRoute"])
 	$scope.loadPage(1);
 })
 
-.factory("unitMap", function() {
-
+.factory("unitMap", function($http) {
+	return {
+		url: '/api/csp-framework',
+		get: function() {
+			return $http.get(this.url);
+		}
+	}
 })
 
 .factory("courses", function($http) {

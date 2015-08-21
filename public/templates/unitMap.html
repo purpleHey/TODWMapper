@@ -9,29 +9,31 @@
       </div>
     </div>
     <div class="panel panel-success" ng-repeat="lo in unitLOs">
-      <div class="panel-heading">{{lo.loID}} - {{lo.description}}</div>
+      <div class="panel-heading">{{lo.description}}</div>
     </div>
     <h2>CSP Framework</h2>
     <label>Search: <input ng-model="searchText"></label>
-    <div class="panel panel-default" ng-repeat="eu in eus">
-    <div class="panel-heading">{{eu.euID}} - {{eu.description}}<span>
-            <button class="button pull-right" ng-click="element.isCollapsed = !element.isCollapsed">Show LO's</button></span>
-    </div>
-      <div collapse="element.isCollapsed">
-        <div ng-show="!element.isCollapsed" class="panel-body ">
-          <table class="table" ng-repeat="lo in eu.learningObjectives | filter:searchText">
-            <tr>
-              <td>{{lo.loID}} - </td>
-              <td class="text-left">{{lo.description}}</td>
-              <td>
-<!--                 <button ng-click="toggle = !toggle">
-<button ng-click="toggle = !toggle"><span ng-show="toggle">Toggle to Off</span><span ng-hide="toggle">Toggle to On</span></button>
- --><!-- <div class="box on" ng-show="toggle" ng-animate="'box'">On</div> -->
+    <div ng-repeat="bigIdea in bigIdeas">
+     {{bigIdea.description}}       
+      <div class="panel panel-default" ng-repeat="eus in bigIdea.children">
+      <div class="panel-heading">{{eus.description}}<span>
+              <button class="button pull-right" ng-click="element.isCollapsed = !element.isCollapsed">Show LO's</button></span>
+      </div>
+        <div collapse="element.isCollapsed">
+          <div ng-show="!element.isCollapsed" class="panel-body ">
+            <table class="table" ng-repeat="lo in eus.children | filter:searchText">
+              <tr>
+                <td class="text-left">{{lo.description}}</td>
+                <td>
+  <!--                 <button ng-click="toggle = !toggle">
+  <button ng-click="toggle = !toggle"><span ng-show="toggle">Toggle to Off</span><span ng-hide="toggle">Toggle to On</span></button>
+   --><!-- <div class="box on" ng-show="toggle" ng-animate="'box'">On</div> -->
 
-                <button class="button pull-right" ng-click="toggleLOinUnit()">Add</button>
-              </td>
-            </tr>
-          </table>
+                  <button class="button pull-right" ng-click="toggleLOinUnit()">Add</button>
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
     </div>
