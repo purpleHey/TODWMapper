@@ -9,7 +9,7 @@
 
 		<!-- HEADER AND TODO COUNT -->
 		<div class="jumbotron text-center">
-			<h1>Unit 1 Outline: <span class="label label-info">{{ todos.length }}</span> Items</h1>
+			<h1>Unit 1 Outline: <span class="label label-info">{{ unit.name }}</span> Items</h1>
 		</div>
 
 		<!-- TODO LIST -->
@@ -19,9 +19,9 @@
 				
 
 				<!-- LOOP OVER THE TODOS IN $scope.todos -->
-				<div class="checkbox" ng-repeat="lessonItem in lessonItems">
+				<div class="checkbox" ng-repeat="lessonItem in unit.lessons">
 					<label>
-						<input type="checkbox" ng-click="deleteTodo(lessonItem._id)"> {{ lessonItem.text }}
+						<input type="checkbox" ng-click="deleteTodo(lessonItem._id)"> {{ lessonItem.name }}
 					</label>
 				</div>
 

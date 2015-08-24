@@ -4,15 +4,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+
+var routes = require('./routes/index');
+
 var app = express();
 
-var mongoose = require('mongoose');           // mongoose for mongodb
-// configuration ===============================================================
-app.set('mongodb-uri', process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'localhost/todw');
-app.db = mongoose.createConnection(app.get('mongodb-uri'));
-
-var routes = require('./routes/index')(app);
-var schema = require('./app/models/lessonBuilderModel');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -27,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use('/', routes);
+app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

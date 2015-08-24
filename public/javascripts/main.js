@@ -102,16 +102,16 @@ angular.module("newApp", ["ngRoute"])
 	$scope.loadPage(1);
 })
 
-.controller('lessonBuilderController', function($scope, $http, lessonItems) {
+.controller('lessonBuilderController', function($scope, $http, unit) {
 	$scope.formData = {};
 	$scope.loading = true;
 
 	// GET =====================================================================
 	// when landing on the page, get all todos and show them
 	// use the service to get all the todos
-	lessonItems.get()
+	unit.get()
 		.success(function(data) {
-			$scope.lessonItems = data;
+			$scope.unit = data;
 			$scope.loading = false;
 		});
 
@@ -150,16 +150,16 @@ angular.module("newApp", ["ngRoute"])
 	};
 })
 
-.factory('lessonItems', function($http) {
+.factory('unit', function($http) {
 	return {
 		get : function() {
-			return $http.get('/api/lessonItems');
+			return $http.get('/api/unit');
 		},
 		create : function(lessonItemData) {
-			return $http.post('/api/lessonItems', lessonItemData);
+			return $http.post('/api/unit', lessonItemData);
 		},
 		delete : function(id) {
-			return $http.delete('/api/lessonItems/' + id);
+			return $http.delete('/api/unit/' + id);
 		}
 	}
 })
