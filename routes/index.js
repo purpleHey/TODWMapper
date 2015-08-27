@@ -16,7 +16,7 @@ mongoose.connect('mongodb://localhost/todw', function(err) {
 });
 
 // Unit is the mongoose schema for a Unit
-var Unit = require('../app/models/lessonBuilderModel');
+var UnitMetadata = require('../app/models/unitMetadata');
 
 function appendQueryParams(path) {
 	var queryParams = path.slice(path.indexOf('?') + 1);
@@ -27,18 +27,20 @@ function appendQueryParams(path) {
 	}
 }
 
-function getUnit(res){
+function createUnit(res) {
+	Unit.create();
+}
 
-	console.log(Unit);
+function getUnits(res){
 
-	Unit.find(function(err, lessonItems) {
+	Unit.find(function(err, units) {
 
 				// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 	if (err)
 		res.send(err)
 
-		console.log(lessonItems);
-		res.json(lessonItems); // return all todos in JSON format
+		console.log(units);
+		res.json(units); // return all units in JSON format
 	});
 }
 
@@ -74,11 +76,21 @@ router.get('/api/csp-framework', function (req, res) {
 
 		// api ---------------------------------------------------------------------
 	// get all the unit and the lessons
-router.get('/api/unit', function(req, res) {
+router.get('/api/units', function(req, res) {
 
-		// use mongoose to get all todos in the database
-		console.log('/api/unit');
-		getUnit(res);
+		// use mongoose to get unit with the canvasUnitID in the database
+		console.log('/api/units');
+	UnitMetadata.find(function(err, unitMetadata) {
+
+				// if there is an error retrieving, send the error. nothing after res.send(err) will execute
+		if (err)
+			res.send(err)
+
+		console.log(unitMetadata);
+		res.json(unitMetadata); // return all units in JSON format
+	
+	});
+
 });
 
 	// create todo and send back all todos after creation
@@ -96,6 +108,14 @@ router.post('/api/unit', function(req, res) {
 		getLessonItems(res);
 	});
 
+});
+
+/* PUT /units/:id */
+router.put('/:id', function(req, res, next) {
+  Todo.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
+    if (err) return next(err);
+    res.json(post);
+  });
 });
 
 	// delete a todo

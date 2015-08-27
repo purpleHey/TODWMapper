@@ -34,7 +34,7 @@ angular.module("newApp", ["ngRoute"])
 	})
 })
 
-.controller("unitMap", function($scope, unitMap){
+.controller("unitMap", function($scope, CSPFrameworkMap){
 	$scope.unit = 1;
 	$scope.unitLOs = [];
 	// {
@@ -46,26 +46,20 @@ angular.module("newApp", ["ngRoute"])
 	// 	"description": "Create a new computational artifact by combining or modifying existing artifacts. [P2]"
 	// }
 	// ];
-	unitMap.get()
+	CSPFrameworkMap.get()
 	.success(function(unitMap) {
 		$scope.bigIdeas = unitMap;
 	})
 
-	$scope.toggleLOinUnit = function(){
-		if(this.lo.units === undefined) {
-			this.lo.units = [];
-			this.lo.units.push(this.unit);
-			this.unitLOs.push(this.lo);
-		}
-		if(this.lo.units.indexOf(this.unit) === -1) {
+	$scope.toggleLOinUnit = function(lo){
+		var index = $scope.unitLOs.indexOf(lo);
+		if(index === -1) {
 			// THis LO is not in the unit, so add it.
-			this.lo.units.push(this.unit);
-			this.unitLOs.push(this.lo);
+			$scope.unitLOs.push(lo);
 		} else {
-			this.lo.units.pop(this.unit);
-			this.unitLOs.pop(this.lo);
+			$scope.unitLOs.splice(index, 1);
 		}
-		console.log(this.lo);
+		console.log(lo);
 	};
 })
 
@@ -77,12 +71,22 @@ angular.module("newApp", ["ngRoute"])
 
 })
 
-.controller("modules", function(modules, $scope, $routeParams){
+.controller("modules", function(modules, unitsMetadata, $scope, $routeParams){
 	modules.get($routeParams.id)
 	.success(function (modules, status, headers) {
 		$scope.modules = modules;
 		$scope.course = $routeParams.id;
-	})
+	});
+
+		// GET =====================================================================
+	// when landing on the page, get all units and show them
+	// use the service to get all the units
+	unitsMetadata.get()
+		.success(function(data) {
+			$scope.unitsMetadata = data;
+			$scope.loading = false;
+		});
+
 })
 
 .controller("lessonItems", function(moduleItems, $scope, $routeParams){
@@ -102,16 +106,16 @@ angular.module("newApp", ["ngRoute"])
 	$scope.loadPage(1);
 })
 
-.controller('lessonBuilderController', function($scope, $http, unit) {
+.controller('lessonBuilderController', function($scope, $http, units) {
 	$scope.formData = {};
 	$scope.loading = true;
 
 	// GET =====================================================================
 	// when landing on the page, get all todos and show them
 	// use the service to get all the todos
-	unit.get()
+	units.get()
 		.success(function(data) {
-			$scope.unit = data;
+			$scope.unit = data[0];
 			$scope.loading = false;
 		});
 
@@ -124,8 +128,9 @@ angular.module("newApp", ["ngRoute"])
 		if ($scope.formData.text != undefined) {
 			$scope.loading = true;
 
+
 			// call the create function from our service (returns a promise object)
-			lessonItems.create($scope.formData)
+			unit.create($scope.formData)
 
 				// if successful creation, call our get function to get all the new todos
 				.success(function(data) {
@@ -150,21 +155,21 @@ angular.module("newApp", ["ngRoute"])
 	};
 })
 
-.factory('unit', function($http) {
+.factory('unitsMetadata', function($http) {
 	return {
 		get : function() {
-			return $http.get('/api/unit');
+			return $http.get('/api/units');
 		},
 		create : function(lessonItemData) {
-			return $http.post('/api/unit', lessonItemData);
+			return $http.post('/api/units', lessonItemData);
 		},
 		delete : function(id) {
-			return $http.delete('/api/unit/' + id);
+			return $http.delete('/api/units/' + id);
 		}
 	}
 })
 
-.factory("unitMap", function($http) {
+.factory("CSPFrameworkMap", function($http) {
 	return {
 		url: '/api/csp-framework',
 		get: function() {

@@ -9,7 +9,7 @@
 
 		<!-- HEADER AND TODO COUNT -->
 		<div class="jumbotron text-center">
-			<h1>Unit 1 Outline: <span class="label label-info">{{ unit.name }}</span> Items</h1>
+			<h1>{{ unit.name }} Outline: <span class="label label-info">{{ unit.lessons.length }}</span> Lessons</h1>
 		</div>
 
 		<!-- TODO LIST -->
@@ -21,7 +21,7 @@
 				<!-- LOOP OVER THE TODOS IN $scope.todos -->
 				<div class="checkbox" ng-repeat="lessonItem in unit.lessons">
 					<label>
-						<input type="checkbox" ng-click="deleteTodo(lessonItem._id)"> {{ lessonItem.name }}
+						<input type="checkbox" ng-click="deleteTodo(lessonItem._id)"> {{ lessonItem }}
 					</label>
 				</div>
 
@@ -39,7 +39,7 @@
 					<div class="form-group">
 
 						<!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
-						<input type="text" class="form-control input-lg text-center" placeholder="Item Description" ng-model="formData.text">
+						<input type="text" class="form-control input-lg text-center" placeholder="Short Lesson Description" ng-model="formData.text">
 					</div>
 
 					<!-- createToDo() WILL CREATE NEW TODOS -->
@@ -49,7 +49,7 @@
 		</div>
 
 		<div class="text-center text-muted">
-			<p>More info here: <a href="http://scotch.io">Scotch</a>.</p>
+			<p>More info here: <a href="http://cs.utexas.edu/~engage">Thriving in Our Digital World</a>.</p>
 		</div>
 
 	</div>

@@ -34,10 +34,9 @@
   <button ng-click="toggle = !toggle"><span ng-show="toggle">Toggle to Off</span><span ng-hide="toggle">Toggle to On</span></button>
    --><!-- <div class="box on" ng-show="toggle" ng-animate="'box'">On</div> -->
 
-                  <button class="button pull-right" ng-click="toggleLOinUnit()" ng-click="loAdded.isAdded = !loAdded.isAdded">
-                  <span ng-show="loAdded.isAdded">Remove</span>
-                  <span ng-hide="loAdded.isAdded">Add</span>
-                  <div class="lo on" ng-show="element.isAdded" ng-animage="'lo'"></div></button>
+                  <button class="button pull-right" ng-click="toggleLOinUnit(lo); isAdded = !isAdded">
+                    {{isAdded ? "Remove" : "Add"}}
+                  <div class="lo on" ng-show="isAdded" ng-animage="'lo'"></div></button>
                 </td>
               </tr>
             </table>
