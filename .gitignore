@@ -1,2 +1,3 @@
 node_modules/
 app/routes/sessionToken.js
+public/lib

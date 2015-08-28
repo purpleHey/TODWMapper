@@ -1,4 +1,4 @@
-angular.module('newApp', ['ngRoute'])
+angular.module('newApp', ['ngRoute', 'ui.bootstrap'])
 .config(function($routeProvider){
     $routeProvider.when('/courses', {
         controller: 'courses',

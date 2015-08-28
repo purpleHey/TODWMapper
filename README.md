@@ -12,6 +12,8 @@ exports.sessionKey = function () {
 ```
 
 * `npm install`
+* `npm install -g bower` (if you don't have bower yet)
+* `bower install`
 
 ### Running the Application
 
