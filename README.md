@@ -1,8 +1,20 @@
 # TODWMapper
-Here are some notes.
 
-Now I'm making changes on the experimenal branch.
+## Getting Started
 
-Now making a 2nd change on the experimental branch.
+### Developer Setup
 
-Where have all the good times gone?
+First, you need a development key for the [Canvas API](https://canvas.instructure.com/doc/api/index.html). Make a file called `app/routes/sessionToken.js` with the follwoing:
+```javascript
+exports.sessionKey = function () {
+    return '<your-session-key>';
+}
+```
+
+* `npm install`
+
+### Running the Application
+
+* `mongod` (in a different terminal)
+* `npm start`
+* visit `localhost:3000`
