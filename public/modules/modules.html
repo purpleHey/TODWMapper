@@ -1,4 +1,4 @@
-<h1>AP Computer Science Principles</h1>
+<h1>{{course.name}}</h1>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -10,7 +10,7 @@
      
   <tbody>
     <tr ng-repeat="module in modules">
-      <td><a href="#/courses/{{course}}/module/{{module.id}}">{{module.name}}</a></td>
+      <td><a href="#/courses/{{course.id}}/module/{{module.id}}">{{module.name}}</a></td>
       <td>{{module.items_count}}</td>
       <td>
         <a href="" class="btn btn-primary" ng-repeat="lo in module.learningObjectives">{{ lo }}</a>
