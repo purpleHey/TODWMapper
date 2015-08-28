@@ -1,8 +1,20 @@
-<table>
-	<tr ng-repeat="module in modules">
-		<td>{{module.name}}</td>
-		<td><a href="#/courses/{{course}}/module/{{module.id}}">{{module.id}}</a></td>
-		<td>{{module.items_count}}</td>
-		<td>{{module.learningObjectives[0]}}</td>
-	</tr>
+<h1>AP Computer Science Principles</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th># Lessons</th>
+      <th>Learning Objectives</th>
+    </tr>
+  </thead>
+     
+  <tbody>
+    <tr ng-repeat="module in modules">
+      <td><a href="#/courses/{{course}}/module/{{module.id}}">{{module.name}}</a></td>
+      <td>{{module.items_count}}</td>
+      <td>
+        <a href="" class="btn btn-primary" ng-repeat="lo in module.learningObjectives">{{ lo }}</a>
+      </td>
+    </tr>
+  </tbody>
 </table>
