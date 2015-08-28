@@ -33,20 +33,20 @@ angular.module('newApp')
         });
     });
 
-    // $scope.open = function (size) {
+    $scope.open = function (size) {
 
-    //   var modalInstance = $modal.open({
-    //     animation: $scope.animationsEnabled,
-    //     templateUrl: 'modalMap.html',
-    //     controller: 'modalModuleMap',
-    //     size: size,
-    //     resolve: {
-    //       unitLOs: function () {
-    //         return $scope.unitLOs;
-    //       }
-    //     }
-    //   });
-    // });
+      var modalInstance = $modal.open({
+        animation: true,
+        templateUrl: './moduleMap.html',
+        controller: 'modalModuleMap',
+        size: size,
+        resolve: {
+          unitLOs: function () {
+            return $scope.unitLOs;
+          }
+        }
+      });
+    };
 });
 
     // modalInstance.result.then(function (selectedItem) {
