@@ -16,7 +16,7 @@ mongoose.connect('mongodb://localhost/todw', function(err) {
 });
 
 // Unit is the mongoose schema for a Unit
-var UnitMetadata = require('../app/models/unitMetadata');
+var UnitMetadata = require('../models/unitMetadata');
 
 function appendQueryParams(path) {
 	var queryParams = path.slice(path.indexOf('?') + 1);
