@@ -1,2 +1,2 @@
 node_modules/
-/routes/sessionToken.js
+app/routes/sessionToken.js
