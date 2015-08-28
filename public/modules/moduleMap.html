@@ -1,9 +1,8 @@
-<div class="modal-header">
-  <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
-  <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+<!-- <div class="modal-header">
 </div>
 
-<div class="modalBody">
+ -->
+ <div class="modalBody">
   <h2>Unit 1 - Our Digital World - Learning Objectives Map</h2>
 
   <form role="form" ng-submit="addLOs()">
@@ -14,12 +13,17 @@
       </div>
     </div>
 
-
-    <div class="panel panel-success" ng-repeat="lo in unitLOs">
+   <div class="panel panel-success" ng-repeat="lo in unitLOs">
       <div class="panel-heading">{{lo.description}}</div>
     </div>
     <h2>CSP Framework</h2>
+
     <label>Search: <input ng-model="searchText"></label>
+    <span>
+      <button class="btn btn-primary pull-right" type="button" ng-click="ok()">OK</button>
+      <button class="btn btn-warning pull-right" type="button" ng-click="cancel()">Cancel</button>
+    </span>
+
     <div ng-repeat="bigIdea in bigIdeas">
      {{bigIdea.description}}       
       <div class="panel panel-default" ng-repeat="eus in bigIdea.children">
@@ -28,7 +32,7 @@
               <button class="button pull-right" ng-click="element.isCollapsed = !element.isCollapsed">
                 <span ng-show="element.isCollapsed">Hide LO's</span>
                 <span ng-hide="element.isCollapsed">Show LO's</span>
-                <div class="box on" ng-show="element.isCollapsed" ng-animate="'box'"></div>
+                <!-- <div class="box on" ng-show="element.isCollapsed" ng-animate="'box'"></div> -->
               </button></span>
       </div>
         <div collapse="element.isCollapsed">
@@ -37,10 +41,6 @@
               <tr>
                 <td class="text-left">{{lo.description}}</td>
                 <td>
-  <!--                 <button ng-click="toggle = !toggle">
-  <button ng-click="toggle = !toggle"><span ng-show="toggle">Toggle to Off</span><span ng-hide="toggle">Toggle to On</span></button>
-   --><!-- <div class="box on" ng-show="toggle" ng-animate="'box'">On</div> -->
-
                   <button class="button pull-right" ng-click="toggleLOinUnit(lo); isAdded = !isAdded">
                     {{isAdded ? "Remove" : "Add"}}
                   <div class="lo on" ng-show="isAdded" ng-animage="'lo'"></div></button>

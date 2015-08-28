@@ -1,5 +1,5 @@
 angular.module('newApp')
-.controller('modules', function(courses, modules, moduleMetadata, $modal, $scope, $routeParams){
+.controller('modules', function(courses, modules, moduleMetadata, $modal, $log, $scope, $routeParams){
     function find(modules, courseID) {
         for(i = 0; i < modules.length; i++) {
             if(modules[i].id === courseID)
@@ -37,7 +37,7 @@ angular.module('newApp')
 
       var modalInstance = $modal.open({
         animation: true,
-        templateUrl: './moduleMap.html',
+        templateUrl: 'modules/moduleMap.html',
         controller: 'modalModuleMap',
         size: size,
         resolve: {
@@ -46,11 +46,12 @@ angular.module('newApp')
           }
         }
       });
+
+      modalInstance.result.then(function (unitLOs) {
+        $scope.selected = unitLOs;
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
     };
 });
 
-    // modalInstance.result.then(function (selectedItem) {
-    //     $scope.selected = selectedItem;
-    // }, function () {
-    //       $log.info('Modal dismissed at: ' + new Date());
-    // });
