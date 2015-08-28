@@ -7,5 +7,5 @@ var unitMetadataSchema = new mongoose.Schema({
 
 // mongoose.model compiles the schema into a model, and the model is the class
 // which is used to create documents.
-module.exports = mongoose.model('UnitMetadata', unitMetadataSchema);
+module.exports = mongoose.model('UnitMetadata', unitMetadataSchema, 'unitsMetadata');
 

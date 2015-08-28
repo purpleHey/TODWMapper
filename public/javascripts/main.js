@@ -76,17 +76,16 @@ angular.module("newApp", ["ngRoute"])
 	.success(function (modules, status, headers) {
 		$scope.modules = modules;
 		$scope.course = $routeParams.id;
-	});
+		unitsMetadata.get()
+			.success(function(data) {
+				data.forEach(function(meta) {
+					var module = find($scope.modules, meta.canvasID);
 
-		// GET =====================================================================
-	// when landing on the page, get all units and show them
-	// use the service to get all the units
-	unitsMetadata.get()
-		.success(function(data) {
-			$scope.unitsMetadata = data;
-			$scope.loading = false;
+					if(module)
+						module.learningObjectives = meta.learningObjectives;
+				});
+			});
 		});
-
 })
 
 .controller("lessonItems", function(moduleItems, $scope, $routeParams){
@@ -211,6 +210,13 @@ angular.module("newApp", ["ngRoute"])
 		}
 	};
 })
+
+function find(modules, courseID) {
+	for(i = 0; i < modules.length; i++) {
+		if(modules[i].id === courseID)
+			return modules[i];
+	}
+}
 
 function createArray(count) {
 	var array = [];
