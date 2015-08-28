@@ -1,6 +1,6 @@
 angular.module('newApp')
 .controller('courses', function($scope, courses){
-    courses.get()
+    courses.getAll()
     .success(function (courses) {
         $scope.courses = courses;
     });
