@@ -1,5 +1,5 @@
 angular.module('newApp')
-.controller('moduleMap', function($scope, CSPFrameworkMap){
+.controller('modalModuleMap', function($scope, CSPFrameworkMap){
     $scope.unit = 1;
     $scope.unitLOs = [];
     // {
@@ -27,3 +27,17 @@ angular.module('newApp')
         console.log(lo);
     };
 });
+// Please note that $modalInstance represents a modal window (instance) dependency.
+// It is not the same as the $modal service used above.
+
+// angular.module('newApp').controller('ModalInstanceCtrl', function ($scope, $modalInstance, items) {
+
+//   $scope.ok = function () {
+//     $modalInstance.close($scope.unitLOs);
+//   };
+
+//   $scope.cancel = function () {
+//     $modalInstance.dismiss('cancel');
+//   };
+// });
+

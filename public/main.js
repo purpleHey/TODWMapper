@@ -12,10 +12,10 @@ angular.module('newApp', ['ngRoute', 'ui.bootstrap'])
         controller: 'lessonBuilder',
         templateUrl: '/lessonBuilder/lessonBuilder.html'
     })
-    .when('/courses/map', {
-        controller: 'moduleMap',
-        templateUrl: '/modules/moduleMap.html'
-    })
+    // .when('/courses/map', {
+    //     controller: 'modulemap',
+    //     templateurl: '/modules/modulemap.html'
+    // })
     .when('/courses/:id', {
         controller: 'modules',
         templateUrl: '/modules/modules.html'

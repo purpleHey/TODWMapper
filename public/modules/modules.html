@@ -15,6 +15,13 @@
       <td>
         <a href="" class="btn btn-primary" ng-repeat="lo in module.learningObjectives">{{ lo }}</a>
       </td>
+      <td>
+        <button class="btn btn-default" ng-click="open(lg)">Edit LO's</button>
+      </td>
     </tr>
   </tbody>
 </table>
+<div ng-controller="ModalDemoCtl">
+  <script type="text/ng-template" id="myModalContent.html">
+  </script>
+</div>

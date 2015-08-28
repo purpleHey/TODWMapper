@@ -1,4 +1,9 @@
-<div class="container">
+<div class="modal-header">
+  <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+  <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>
+
+<div class="modalBody">
   <h2>Unit 1 - Our Digital World - Learning Objectives Map</h2>
 
   <form role="form" ng-submit="addLOs()">
@@ -8,6 +13,8 @@
         Students explore the current state of technology and its role in our everyday lives.
       </div>
     </div>
+
+
     <div class="panel panel-success" ng-repeat="lo in unitLOs">
       <div class="panel-heading">{{lo.description}}</div>
     </div>
