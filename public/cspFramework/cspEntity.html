@@ -1,0 +1,11 @@
+<h2 ng-click="isShown = !isShown">
+  <span class="btn btn-info btn-sm">{{entity.id}}</span>
+  <span ng-if="entity.children && entity.children.length > 0">
+    {{ isShown ? '&#9650;' : '&#9660;' }}
+  </span>
+  {{entity.description}}
+</h2>
+<div ng-show="isShown && entity.children && entity.children.length > 0">
+  <span class="csp-indention"></span>
+  <csp-entity entity="childEntity" ng-repeat="childEntity in entity.children"></csp-entity>
+</div>
