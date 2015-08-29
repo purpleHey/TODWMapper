@@ -35,18 +35,16 @@ angular.module('newApp')
 
     $scope.open = function (size, module) {
 
-      $scope.module = module;
       var modalInstance = $modal.open({
         animation: true,
         templateUrl: 'modules/moduleMap.html',
         controller: 'modalModuleMap',
-        scope: $scope,
-        size: size
-        // resolve: {
-        //   unitLOs: function () {
-        //     return $scope.unitLOs;
-        //   }
-        // }
+        size: size,
+        resolve: {
+          unitLOs: function () {
+            return module.learningObjectives;
+          }
+        }
       });
 
       modalInstance.result.then(function (unitLOs) {

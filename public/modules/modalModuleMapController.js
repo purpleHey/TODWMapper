@@ -1,8 +1,8 @@
 angular.module('newApp')
-.controller('modalModuleMap', function($scope, $modalInstance, CSPFrameworkMap){
+.controller('modalModuleMap', function($scope, $modalInstance, CSPFrameworkMap, unitLOs){
     $scope.unit = 1;
-    $scope.unitLOs = $scope.module.learningObjectives;
-    $scope.unitLOsOrig = $scope.module.learningObjectives;
+    $scope.unitLOs = unitLOs.slice();
+    // $scope.unitLOsOrig = unitLOs;
     // {
     //  'id': '1.1.1',
     //  'description': 'Apply a creative development process when creating computational artifacts. [P2]'
