@@ -1,6 +1,10 @@
 angular.module('newApp', ['ngRoute', 'ui.bootstrap'])
 .config(function($routeProvider){
-    $routeProvider.when('/courses', {
+    $routeProvider
+    .when('/csp-framework', {
+        templateUrl: '/cspFramework/cspFrameworkHome.html'
+    })
+    .when('/courses', {
         controller: 'courses',
         templateUrl: '/courses/courses.html'
     })

@@ -13,7 +13,7 @@
       <td><a href="#/courses/{{course.id}}/module/{{module.id}}">{{module.name}}</a></td>
       <td>{{module.items_count}}</td>
       <td>
-        <a href="" class="btn btn-primary" ng-repeat="lo in module.learningObjectives">{{ lo }}</a>
+        <learning-objective id="{{lo}}" ng-repeat="lo in module.learningObjectives"></learning-objective>
       </td>
       <td>
         <button class="btn btn-default" ng-click="open('lg', module)">Edit LO's</button>

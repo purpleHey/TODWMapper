@@ -1,0 +1,12 @@
+eks-tag {
+  margin: 0px 5px;
+}
+
+csp-entity {
+  display: block;
+  margin-left: 30px;
+}
+csp-entity csp-entity h2 {
+  font-weight: normal;
+  font-size: 20px;
+}
