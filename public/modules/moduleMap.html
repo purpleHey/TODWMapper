@@ -14,7 +14,7 @@
     </div>
 
    <div class="panel panel-success" ng-repeat="lo in unitLOs">
-      <div class="panel-heading">{{lo.description}}</div>
+      <div class="panel-heading">{{lo}}</div>
     </div>
     <h2>CSP Framework</h2>
 
@@ -33,7 +33,7 @@
             <tr>
               <td class="text-left">{{lo.description}}</td>
               <td>
-                <button class="button pull-right" ng-click="toggleLOinUnit(lo); isAdded = !isAdded">
+                <button class="button pull-right" ng-click="toggleLOinUnit(lo.id); isAdded = !isAdded">
                   {{isAdded ? "Remove" : "Add"}}
                 <div class="lo on" ng-show="isAdded" ng-animage="'lo'"></div></button>
               </td>

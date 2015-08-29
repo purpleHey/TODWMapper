@@ -1,7 +1,8 @@
 angular.module('newApp')
 .controller('modalModuleMap', function($scope, $modalInstance, CSPFrameworkMap){
     $scope.unit = 1;
-    $scope.unitLOs = [];
+    $scope.unitLOs = $scope.module.learningObjectives;
+    $scope.unitLOsOrig = $scope.module.learningObjectives;
     // {
     //  'id': '1.1.1',
     //  'description': 'Apply a creative development process when creating computational artifacts. [P2]'
@@ -28,11 +29,11 @@ angular.module('newApp')
     };
 
   $scope.ok = function () {
-    var loIDs = [];
-    for(i = 0; i < $scope.unitLOs.length; i++) {
-        loIDs[i] = $scope.unitLOs[i].id;
-    }
-    $modalInstance.close(loIDs);
+    // var loIDs = [];
+    // for(i = 0; i < $scope.unitLOs.length; i++) {
+    //     loIDs[i] = $scope.unitLOs[i].id;
+    // }
+    $modalInstance.close($scope.unitLOs);
   };
 
   $scope.cancel = function () {

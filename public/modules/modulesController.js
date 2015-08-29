@@ -35,10 +35,12 @@ angular.module('newApp')
 
     $scope.open = function (size, module) {
 
+      $scope.module = module;
       var modalInstance = $modal.open({
         animation: true,
         templateUrl: 'modules/moduleMap.html',
         controller: 'modalModuleMap',
+        scope: $scope,
         size: size,
         resolve: {
           unitLOs: function () {
@@ -50,8 +52,7 @@ angular.module('newApp')
       modalInstance.result.then(function (unitLOs) {
         module.learningObjectives = unitLOs;
       }, function () {
-        console.log(unitLOs);
-        $log.info('Modal dismissed at: ' + new Date());
+        $log.info('Modal canceled at: ' + new Date());
       });
     };
 });
