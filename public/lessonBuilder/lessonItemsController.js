@@ -20,6 +20,16 @@ angular.module('newApp')
         return array;
     }
 
+    function findSubHeaders(lessonItems) {
+        var subHeaders = [];
+
+        for(var i = 0; i < lessonItems.length; i++) {
+            if(lessonItems[i].type === 'SubHeader')
+                subHeaders.push(lessonItems[i]);
+        }
+        return subHeaders;
+    }
+
     console.log($routeParams.id);
     $scope.loadPage = function(pageNum) {
 
@@ -27,10 +37,11 @@ angular.module('newApp')
         .success(function (lessonItems, status, headers) {
             var pgs = makePageMap(headers('link'));
 
-            console.log(pgs);
+            var subHeaders = findSubHeaders(lessonItems);
+            console.log(subHeaders);
             $scope.pages = pgs;
             $scope.pageNumbers = createArray(pgs.last);
-            $scope.lessonItems = lessonItems;
+            $scope.lessonItems = subHeaders;
         })
     }
     $scope.loadPage(1);

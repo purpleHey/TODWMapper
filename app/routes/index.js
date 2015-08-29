@@ -48,7 +48,7 @@ router.use('/api/canvas', function (req, res, next) {
 
 	// console.log('The sessionKey = ', accessToken.sessionKey());
 	var url = coursesEndpoint + req.path +
-				'?access_token=' + accessToken.sessionKey() + appendQueryParams(req.originalUrl);
+				'?per_page=100&access_token=' + accessToken.sessionKey() + appendQueryParams(req.originalUrl);
 	console.log(url);
 
 	var options = {

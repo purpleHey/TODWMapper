@@ -23,33 +23,23 @@
       <button class="btn btn-primary pull-right" type="button" ng-click="ok()">OK</button>
       <button class="btn btn-warning pull-right" type="button" ng-click="cancel()">Cancel</button>
     </span>
-
+  
     <div ng-repeat="bigIdea in bigIdeas">
      {{bigIdea.description}}       
-      <div class="panel panel-default" ng-repeat="eus in bigIdea.children">
-
-      <div class="panel-heading">{{eus.description}}<span>
-              <button class="button pull-right" ng-click="element.isCollapsed = !element.isCollapsed">
-                <span ng-show="element.isCollapsed">Hide LO's</span>
-                <span ng-hide="element.isCollapsed">Show LO's</span>
-                <!-- <div class="box on" ng-show="element.isCollapsed" ng-animate="'box'"></div> -->
-              </button></span>
-      </div>
-        <div collapse="element.isCollapsed">
-          <div ng-show="element.isCollapsed" class="panel-body ">
-            <table class="table" ng-repeat="lo in eus.children | filter:searchText">
-              <tr>
-                <td class="text-left">{{lo.description}}</td>
-                <td>
-                  <button class="button pull-right" ng-click="toggleLOinUnit(lo); isAdded = !isAdded">
-                    {{isAdded ? "Remove" : "Add"}}
-                  <div class="lo on" ng-show="isAdded" ng-animage="'lo'"></div></button>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
+      <accordion close-others="oneAtATime" class="panel panel-default" ng-repeat="eus in bigIdea.children">
+        <accordion-group heading="{{eus.description}}" is-open=isCollapesd>
+          <span>
+          <table class="table" ng-repeat="lo in eus.children | filter:searchText">
+            <tr>
+              <td class="text-left">{{lo.description}}</td>
+              <td>
+                <button class="button pull-right" ng-click="toggleLOinUnit(lo); isAdded = !isAdded">
+                  {{isAdded ? "Remove" : "Add"}}
+                <div class="lo on" ng-show="isAdded" ng-animage="'lo'"></div></button>
+              </td>
+            </tr>
+          </table>
+      </accordion>
     </div>
   </form>
 </div>

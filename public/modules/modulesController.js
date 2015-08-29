@@ -33,7 +33,7 @@ angular.module('newApp')
         });
     });
 
-    $scope.open = function (size) {
+    $scope.open = function (size, module) {
 
       var modalInstance = $modal.open({
         animation: true,
@@ -48,8 +48,9 @@ angular.module('newApp')
       });
 
       modalInstance.result.then(function (unitLOs) {
-        $scope.selected = unitLOs;
+        module.learningObjectives = unitLOs;
       }, function () {
+        console.log(unitLOs);
         $log.info('Modal dismissed at: ' + new Date());
       });
     };
