@@ -41,12 +41,12 @@ angular.module('newApp')
         templateUrl: 'modules/moduleMap.html',
         controller: 'modalModuleMap',
         scope: $scope,
-        size: size,
-        resolve: {
-          unitLOs: function () {
-            return $scope.unitLOs;
-          }
-        }
+        size: size
+        // resolve: {
+        //   unitLOs: function () {
+        //     return $scope.unitLOs;
+        //   }
+        // }
       });
 
       modalInstance.result.then(function (unitLOs) {
