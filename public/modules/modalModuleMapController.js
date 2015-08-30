@@ -2,7 +2,10 @@ angular.module('newApp')
 .controller('modalModuleMap', function($scope, $modalInstance, CSPFrameworkMap, unitLOs){
     $scope.unit = 1;
     // create a copy...
-    $scope.unitLOs = unitLOs.slice();
+    $scope.unitLOs = [];
+
+    if(unitLOs)
+      $scope.unitLOs = unitLOs.slice();
 
     CSPFrameworkMap.get()
     .success(function(unitMap) {
