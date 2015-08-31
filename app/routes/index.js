@@ -19,115 +19,82 @@ mongoose.connect('mongodb://localhost/todw', function(err) {
 var UnitMetadata = require('../models/unitMetadata');
 
 function appendQueryParams(path) {
-	var queryParams = path.slice(path.indexOf('?') + 1);
-	if(queryParams === "") {
-		return "";
-	} else {
-		return "&" + queryParams;
-	}
-}
-
-function createUnit(res) {
-	Unit.create();
-}
-
-function getUnits(res){
-
-	Unit.find(function(err, units) {
-
-				// if there is an error retrieving, send the error. nothing after res.send(err) will execute
-	if (err)
-		res.send(err)
-
-		console.log(units);
-		res.json(units); // return all units in JSON format
-	});
+    var queryParams = path.slice(path.indexOf('?') + 1);
+    if(queryParams === "") {
+        return "";
+    } else {
+        return "&" + queryParams;
+    }
 }
 
 router.use('/api/canvas', function (req, res, next) {
 
-	// console.log('The sessionKey = ', accessToken.sessionKey());
-	var url = coursesEndpoint + req.path +
-				'?per_page=100&access_token=' + accessToken.sessionKey() + appendQueryParams(req.originalUrl);
-	console.log(url);
+    // console.log('The sessionKey = ', accessToken.sessionKey());
+    var url = coursesEndpoint + req.path +
+                '?per_page=100&access_token=' + accessToken.sessionKey() + appendQueryParams(req.originalUrl);
+    console.log(url);
 
-	var options = {
-	  url: url,
-	  headers: {
-	    'Accept': 'application/json'
-	  }
-	};
+    var options = {
+      url: url,
+      headers: {
+        'Accept': 'application/json'
+      }
+    };
 
-	request(options, function (err, resp, body) {
-			// console.log("response headers: ", resp.headers);
-		if (!err && resp.statusCode == 200) {
-			res.set(resp.headers);
-			res.send(body);
-		} else {
-			res.send(err);
-		}
-	});
+    request(options, function (err, resp, body) {
+            // console.log("response headers: ", resp.headers);
+        if (!err && resp.statusCode == 200) {
+            res.set(resp.headers);
+            res.send(body);
+        } else {
+            res.send(err);
+        }
+    });
 });
 
 router.get('/api/csp-framework', function (req, res) {
     res.send(cspFramework);
 });
-	
 
-		// api ---------------------------------------------------------------------
-	// get all the unit and the lessons
-router.get('/api/units', function(req, res) {
+function respondWithQuery (fn, successCode) {
+    successCode || (successCode = 200);
 
-		// use mongoose to get unit with the canvasUnitID in the database
-		console.log('/api/units');
-	UnitMetadata.find(function(err, unitMetadata) {
+    return function (req, res, next) {
+        function onSuccess (result) {
+            res.status(successCode);
+            if (result && successCode !== 204) {
+                res.json(result);
+            } else {
+                res.end();
+            }
+        }
 
-				// if there is an error retrieving, send the error. nothing after res.send(err) will execute
-		if (err)
-			res.send(err)
+        fn(req).then(onSuccess, next);
+    }
+}
 
-		console.log(unitMetadata);
-		res.json(unitMetadata); // return all units in JSON format
-	
-	});
+router.get('/api/units', respondWithQuery(function (req) {
+    return UnitMetadata.find();
+}));
 
-});
+router.get('/api/units/:id', respondWithQuery(function (req) {
+    return UnitMetadata.find({ moduleID: req.params.id }).then(function (metas) {
+        return metas.map(function (meta) { return meta.learningObjective; });
+    });
+}));
 
-	// create todo and send back all todos after creation
-router.post('/api/unit', function(req, res) {
+router.post('/api/units', respondWithQuery(function (req) {
+    return UnitMetadata.assign(req.body.moduleID, req.body.learningObjectives);
+}, 201));
 
-	// create a todo, information comes from AJAX request from Angular
-	LessonItem.create({
-		text : req.body.text,
-		done : false
-	}, function(err, lessonItem) {
-		if (err)
-			res.send(err);
+router.put('/api/units/:id', respondWithQuery(function (req) {
+    return UnitMetadata.clear(req.params.id).then(function () {
+        return UnitMetadata.assign(req.params.id, req.body);
+    });
+}));
 
-		// get and return all the todos after you create another
-		getLessonItems(res);
-	});
-
-});
-
-/* PUT /units/:id */
-router.put('/:id', function(req, res, next) {
-  Todo.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
-  });
-});
-
-	// delete a todo
-router.delete('/api/unit/:unit_id', function(req, res) {
-	Todo.remove({
-		_id : req.params.lessonItem_id
-	}, function(err, todo) {
-		if (err)
-			res.send(err);
-
-		getTodos(res);
-	});
-});
+router.delete('/api/units/:id', respondWithQuery(function (req) {
+    return UnitMetadata.clear(req.params.id);
+}, 204));
 
 module.exports = router;

@@ -25,10 +25,10 @@ angular.module('newApp')
         moduleMetadata.get()
         .success(function(data) {
             data.forEach(function(meta) {
-                var module = find($scope.modules, meta.canvasID);
+                var module = find($scope.modules, meta.moduleID);
 
                 if(module)
-                    module.learningObjectives = meta.learningObjectives;
+                    module.learningObjectives = (module.learningObjectives || []).concat(meta.learningObjective);
             });
         });
     });
