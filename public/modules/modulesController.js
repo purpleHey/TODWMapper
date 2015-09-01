@@ -11,7 +11,7 @@ angular.module('newApp')
     .success(function (course) {
         $scope.course = course;
     });
-    modules.get($routeParams.id)
+    modules.getAll($routeParams.id)
     .success(function (modules, status, headers) {
         $scope.modules = modules;
         // Now that modules has been attached to the $scope, get the module

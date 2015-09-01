@@ -1,11 +1,14 @@
 angular.module('newApp')
 .factory('modules', function($http, courses) {
     return {
-        url: function(courseID) {
-            return courses.url + '/' + courseID + '/modules'
+        url: function(courseID, moduleID) {
+            return courses.url + '/' + courseID + '/modules' + (moduleID ? '/' + moduleID : '');
         },
-        get: function(courseID) {
+        getAll: function(courseID) {
             return $http.get(this.url(courseID));   
-        }
+        },
+        get: function (courseID, moduleID) {
+            return $http.get(this.url(courseID, moduleID));
+        },
     };
 });

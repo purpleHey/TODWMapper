@@ -8,18 +8,10 @@ angular.module('newApp', ['ngRoute', 'ui.bootstrap'])
         controller: 'courses',
         templateUrl: '/courses/courses.html'
     })
-    //.when('/courses/new', {
-    //  controller: 'newCourse',
-    //  templateUrl: '/courses/newCourse.html'
-    //})
     .when('/courses/lesson', {
         controller: 'lessonBuilder',
         templateUrl: '/lessonBuilder/lessonBuilder.html'
     })
-    // .when('/courses/map', {
-    //     controller: 'modulemap',
-    //     templateurl: '/modules/modulemap.html'
-    // })
     .when('/courses/:id', {
         controller: 'modules',
         templateUrl: '/modules/modules.html'

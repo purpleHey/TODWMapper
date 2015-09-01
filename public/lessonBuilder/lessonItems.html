@@ -1,15 +1,29 @@
 <table class="table table-striped">
-  <pre>Model: {{contentType}}</pre>
-  <pre>Results: {{checkResults}}</pre>
+  <h1>Unit - {{moduleName}}</h1>
+  <span>
+    <div class="alert alert-info">
+       <h4>Total Filtered: {{filtered.length}}</h4>
+    </div>
+    <div class="alert alert-info">
+       <h4><span class="badge">{{numLessons}}</span> Lessons</h4>
+       <h4>{{numContentItems}} Lesson Items (Files, External, Page)</h4>
+       <h4><span class="badge">{{numAssessments}}</span> Assessments</h4>
+       <h4><span class="badge">{{numAssignments}}</span> Assignments</h4>
+    </div>
+  </span>
   <div class="btn-group">
-    <label class="btn btn-primary" ng-model="contentType.All" btn-checkbox>All</label>
-    <label class="btn btn-primary" ng-model="contentType.SubHeader" btn-checkbox>Lesson</label>
-    <label class="btn btn-primary" ng-model="contentType.ExternalUrl" btn-checkbox>External URL</label>
-    <label class="btn btn-primary" ng-model="contentType.Quiz" btn-checkbox>Quiz</label>
-    <label class="btn btn-primary" ng-model="contentType.Assignment" btn-checkbox>Assignment</label>
+    <label class="btn btn-primary" ng-model="showContentType.All" btn-checkbox>All</label>
+  </div>
+  <div class="btn-group">
+    <label class="btn btn-primary" ng-model="showContentType.SubHeader" btn-checkbox>Lesson</label>
+<!--     <label class="btn btn-primary" ng-model="showContentType.ExternalUrl" btn-checkbox>External URL</label>
+    <label class="btn btn-primary" ng-model="showContentType.File" btn-checkbox>File</label>
+ -->   
+    <label class="btn btn-primary" ng-model="showContentType.Quiz" btn-checkbox>Quiz</label>
+    <label class="btn btn-primary" ng-model="showContentType.Assignment" btn-checkbox>Assignment</label>
   </div>
 
-	<tr ng-repeat="contentItem in lessonItems | filter: matchType(query)">
+	<tr ng-repeat="contentItem in filtered = (lessonItems | filter: matchType(query))">
 		<td>{{contentItem.title}}</td>
 		<td>{{contentItem.type}}</td>
 	</tr>

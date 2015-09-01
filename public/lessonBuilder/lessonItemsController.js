@@ -1,34 +1,40 @@
 angular.module('newApp')
-.controller('lessonItems', function(moduleItems, $scope, $routeParams){
-    $scope.contentType = {
-        All: false,
-        SubHeader: true,
+.controller('lessonItems', function(modules, moduleItems, $scope, $routeParams){
+    $scope.showContentType = {
+        All: true,
+        SubHeader: false,
         Assignment: false,
         External: false,
+        File: false,
         Quiz: false
     };
 
-    $scope.$watchCollection('contentType', function () {
-      $scope.checkResults = [];
-      angular.forEach($scope.contentType, function (value, key) {
-       if (value) {
-         $scope.checkResults.push(key);
-       }
-      })
+    $scope.$watchCollection('showContentType', function () {
+        if($scope.showContentType.All) {
+            $scope.showContentType.SubHeader = true;
+            $scope.showContentType.Assignment = true;
+            $scope.showContentType.External = true;
+            $scope.showContentType.File = true;
+            $scope.showContentType.Quiz = true;
+        }
     });
 
     $scope.matchType = function(query) {
       return function(contentItem) {
-        if($scope.contentType.All) 
+        var showItem = false;
+        if($scope.showContentType.All) 
             return true;
-        else if($scope.contentType.SubHeader)
-            return contentItem.type.match("SubHeader");
-        else if($scope.contentType.Assignment)
-            return contentItem.type.match("Assignment");
-        else if($scope.contentType.External)
-            return contentItem.type.match("External");
-        else if($scope.contentType.Quiz)
-            return contentItem.type.match("Quiz");
+        else if($scope.showContentType.SubHeader &&
+                    (contentItem.type.match("SubHeader") ||
+                     contentItem.type.match("Page")  ||
+                     contentItem.type.match("External") ||
+                     contentItem.type.match("File")))
+            showItem = true;
+        else if($scope.showContentType.Assignment && contentItem.type.match("Assignment"))
+            showItem = true;
+        else if($scope.showContentType.Quiz && contentItem.type.match("Quiz"))
+            showItem = true;
+        return showItem;
         }
     };
  
@@ -52,29 +58,43 @@ angular.module('newApp')
         return array;
     }
 
-    function findSubHeaders(lessonItems) {
-        var subHeaders = [];
+    function countItemTypes(lessonItems) {
+        $scope.numLessons = 0;
+        $scope.numContentItems = 0;
+        $scope.numAssessments = 0;
+        $scope.numAssignments = 0;
 
         for(var i = 0; i < lessonItems.length; i++) {
-            if(lessonItems[i].type === 'SubHeader')
-                subHeaders.push(lessonItems[i]);
+            var type = lessonItems[i].type;
+            if(type === 'SubHeader')
+                $scope.numLessons++;
+            else if(type === 'Page' || 
+                    type === 'File' ||
+                    type === 'External')
+                $scope.numContentItems++;
+            else if(type === 'Assignment')
+                $scope.numAssignments++;
+            else if(type === 'Quiz')
+                $scope.numAssessments++;
         }
-        return subHeaders;
     }
 
     // console.log($routeParams.id);
     $scope.loadPage = function(pageNum) {
 
-        moduleItems.get($routeParams.id, $routeParams.id2, pageNum)
-        .success(function (lessonItems, status, headers) {
-            var pgs = makePageMap(headers('link'));
+        modules.get($routeParams.id, $routeParams.id2)
+        .success(function(module){
+            $scope.moduleName = module.name;
+            moduleItems.get($routeParams.id, $routeParams.id2, pageNum)
+            .success(function (lessonItems, status, headers) {
+                var pgs = makePageMap(headers('link'));
 
-            // var subHeaders = findSubHeaders(lessonItems);
-            // console.log(subHeaders);
-            $scope.pages = pgs;
-            $scope.pageNumbers = createArray(pgs.last);
-            $scope.lessonItems = lessonItems;
-        })
+                countItemTypes(lessonItems);
+                $scope.pages = pgs;
+                $scope.pageNumbers = createArray(pgs.last);
+                $scope.lessonItems = lessonItems;
+            });
+        });
     }
     $scope.loadPage(1);
 });
