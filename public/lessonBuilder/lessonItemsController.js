@@ -1,22 +1,34 @@
 angular.module('newApp')
 .controller('lessonItems', function(modules, moduleItems, $scope, $routeParams){
     $scope.showContentType = {
-        All: true,
-        SubHeader: false,
+        All: false,
+        Lesson: true,
+        Discussion: false,
         Assignment: false,
-        External: false,
-        File: false,
+        ContentItem: false,
         Quiz: false
     };
 
     $scope.$watchCollection('showContentType', function () {
-        if($scope.showContentType.All) {
-            $scope.showContentType.SubHeader = true;
-            $scope.showContentType.Assignment = true;
-            $scope.showContentType.External = true;
-            $scope.showContentType.File = true;
-            $scope.showContentType.Quiz = true;
-        }
+
+        // if($scope.showContentType.All) {
+        //     $scope.showContentType.Lesson = false;
+        //     $scope.showContentType.Assignment = false;
+        //     $scope.showContentType.ContentItem = false;
+        //     $scope.showContentType.Quiz = false;
+        // } else if($scope.showContentType.Lesson) {
+        //     $scope.showContentType.All = false;
+        //     $scope.showContentType.Lesson = true;
+        //     $scope.showContentType.Assignment = false;
+        //     $scope.showContentType.ContentItem = false;
+        //     $scope.showContentType.Quiz = false;
+        // } else if($scope.showContentType.Assignment) {
+        //     $scope.showContentType.All = false;
+        //     $scope.showContentType.Lesson = false;
+        //     $scope.showContentType.Assignment = true;
+        //     $scope.showContentType.ContentItem = false;
+        //     $scope.showContentType.Quiz = false;
+        // }
     });
 
     $scope.matchType = function(query) {
@@ -24,15 +36,18 @@ angular.module('newApp')
         var showItem = false;
         if($scope.showContentType.All) 
             return true;
-        else if($scope.showContentType.SubHeader &&
-                    (contentItem.type.match("SubHeader") ||
-                     contentItem.type.match("Page")  ||
+        else if($scope.showContentType.Lesson && contentItem.type.match("SubHeader"))
+            showItem = true;
+        else if($scope.showContentType.ContentItem &&
+                    (contentItem.type.match("Page")  ||
                      contentItem.type.match("External") ||
                      contentItem.type.match("File")))
             showItem = true;
         else if($scope.showContentType.Assignment && contentItem.type.match("Assignment"))
             showItem = true;
         else if($scope.showContentType.Quiz && contentItem.type.match("Quiz"))
+            showItem = true;
+        else if($scope.showContentType.Discussion && contentItem.type.match("Discussion"))
             showItem = true;
         return showItem;
         }
@@ -61,8 +76,9 @@ angular.module('newApp')
     function countItemTypes(lessonItems) {
         $scope.numLessons = 0;
         $scope.numContentItems = 0;
-        $scope.numAssessments = 0;
+        $scope.numQuizes = 0;
         $scope.numAssignments = 0;
+        $scope.numDiscussions = 0;
 
         for(var i = 0; i < lessonItems.length; i++) {
             var type = lessonItems[i].type;
@@ -75,7 +91,9 @@ angular.module('newApp')
             else if(type === 'Assignment')
                 $scope.numAssignments++;
             else if(type === 'Quiz')
-                $scope.numAssessments++;
+                $scope.numQuizes++;
+            else if(type === 'Discussion')
+                $scope.numDiscussions++;
         }
     }
 
