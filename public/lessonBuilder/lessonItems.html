@@ -1,5 +1,15 @@
 <table class="table table-striped">
-	<tr ng-repeat="contentItem in lessonItems">
+  <pre>Model: {{contentType}}</pre>
+  <pre>Results: {{checkResults}}</pre>
+  <div class="btn-group">
+    <label class="btn btn-primary" ng-model="contentType.All" btn-checkbox>All</label>
+    <label class="btn btn-primary" ng-model="contentType.SubHeader" btn-checkbox>Lesson</label>
+    <label class="btn btn-primary" ng-model="contentType.ExternalUrl" btn-checkbox>External URL</label>
+    <label class="btn btn-primary" ng-model="contentType.Quiz" btn-checkbox>Quiz</label>
+    <label class="btn btn-primary" ng-model="contentType.Assignment" btn-checkbox>Assignment</label>
+  </div>
+
+	<tr ng-repeat="contentItem in lessonItems | filter: matchType(query)">
 		<td>{{contentItem.title}}</td>
 		<td>{{contentItem.type}}</td>
 	</tr>
