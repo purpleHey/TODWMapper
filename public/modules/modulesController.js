@@ -1,5 +1,5 @@
 angular.module('newApp')
-.controller('modules', function(courses, modules, moduleMetadata, $modal, $log, $scope, $routeParams){
+.controller('modules', function(courses, modules, moduleMetadata, $modal, $log, $scope, $routeParams, $http){
     function find(modules, courseID) {
         for(i = 0; i < modules.length; i++) {
             if(modules[i].id === courseID)
@@ -43,12 +43,18 @@ angular.module('newApp')
         resolve: {
           unitLOs: function () {
             return module.learningObjectives;
+          },
+          moduleName: function() {
+            return module.name;
           }
         }
       });
 
       modalInstance.result.then(function (unitLOs) {
-        module.learningObjectives = unitLOs;
+        $http.put('/api/units/'+module.id, unitLOs)
+            .success(function(data) {
+                module.learningObjectives = data;
+            });
       }, function () {
         $log.info('Modal canceled at: ' + new Date());
       });

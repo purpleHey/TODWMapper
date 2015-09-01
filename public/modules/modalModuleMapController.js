@@ -1,6 +1,7 @@
 angular.module('newApp')
-.controller('modalModuleMap', function($scope, $modalInstance, CSPFrameworkMap, unitLOs){
+.controller('modalModuleMap', function($scope, $modalInstance, CSPFrameworkMap, unitLOs, moduleName){
     $scope.unit = 1;
+    $scope.moduleName = moduleName;
     // create a copy...
     $scope.unitLOs = [];
 
