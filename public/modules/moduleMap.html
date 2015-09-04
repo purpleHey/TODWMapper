@@ -1,8 +1,4 @@
-<!-- <div class="modal-header">
-</div>
-
- -->
- <div class="modalBody">
+<div class="modalBody">
   <h2>{{moduleName}} - Learning Objectives Map</h2>
 
   <form role="form" ng-submit="addLOs()">
@@ -22,7 +18,6 @@
      {{bigIdea.description}}       
       <accordion close-others="oneAtATime" class="panel panel-default" ng-repeat="eus in bigIdea.children">
         <accordion-group heading="{{eus.description}}" is-open=!isCollapsed ng-click="isCollapsed=!isCollapsed">
-          <span>
           <table class="table" ng-repeat="lo in eus.children | filter:searchText">
             <tr>
               <td class="text-left">{{lo.description}}</td>
@@ -32,16 +27,8 @@
                 </button>
               </td>
             </tr>
-              <tr>
-                <td>
-                <table class="table" ng-repeat="ek in lo.children | filter:searchText">
-                  <tr>
-                    <td>{{ek.description}}</td>
-                  </tr>
-                </table>
-               </td>
-              </tr>
           </table>
+        </accordion>
       </accordion>
     </div>
   </form>

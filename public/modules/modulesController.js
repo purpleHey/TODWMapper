@@ -22,7 +22,7 @@ angular.module('newApp')
         //       either need to be done serially (which is what we're done here inside the
         //       .success block of the previous request), or you have to use promise's to 
         //       syncronize the requests.  If you don't there would be a race condition.
-        moduleMetadata.get()
+        moduleMetadata.getAll()
         .success(function(data) {
             data.forEach(function(meta) {
                 var module = find($scope.modules, meta.moduleID);
