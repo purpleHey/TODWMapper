@@ -52,8 +52,10 @@ angular.module('newApp')
 
       modalInstance.result.then(function (unitLOs) {
         $http.put('/api/units/'+module.id, unitLOs)
-            .success(function(data) {
-                module.learningObjectives = data;
+            .success(function(units) {
+                module.learningObjectives = units.map(function (unit) {
+                    return unit.learningObjective;
+                });
             });
       }, function () {
         $log.info('Modal canceled at: ' + new Date());
