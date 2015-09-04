@@ -1,6 +1,6 @@
 <table class="table table-striped">
   <pre>{{showContentType}}</pre>
-  <h1>Unit - {{moduleName}}</h1>
+  <h1>Unit - {{module.name}}</h1>
   <span>
     <div class="alert alert-info">
        <h4><span class="badge">{{numLessons}}</span> Lessons</h4>
@@ -8,6 +8,7 @@
        <h4><span class="badge">{{numQuizes}}</span>Quizes</h4>
        <h4><span class="badge">{{numDiscussions}}</span>Discussions</h4>
        <h4><span class="badge">{{numAssignments}}</span> Assignments</h4>
+       <learning-objective id="{{lo}}" ng-repeat="lo in module.learningObjectives"></learning-objective>
     </div>
     <div class="alert alert-info">
        <h4>Total Filtered: {{filtered.length}}</h4>

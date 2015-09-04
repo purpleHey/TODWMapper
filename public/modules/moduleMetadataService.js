@@ -1,7 +1,10 @@
 angular.module('newApp')
 .factory('moduleMetadata', function($http) {
     return {
-        get : function() {
+        get : function(moduleID) {
+            return $http.get('/api/units' + '/' + moduleID);
+        },
+        getAll: function() {
             return $http.get('/api/units');
         },
         create : function(lessonItemData) {

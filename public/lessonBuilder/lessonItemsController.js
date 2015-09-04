@@ -1,5 +1,5 @@
 angular.module('newApp')
-.controller('lessonItems', function(modules, moduleItems, $scope, $routeParams){
+.controller('lessonItems', function(modules, moduleItems, moduleMetadata, $scope, $routeParams){
     $scope.showContentType = {
         All: false,
         Lesson: true,
@@ -102,15 +102,21 @@ angular.module('newApp')
 
         modules.get($routeParams.id, $routeParams.id2)
         .success(function(module){
-            $scope.moduleName = module.name;
+            $scope.module = module;
             moduleItems.get($routeParams.id, $routeParams.id2, pageNum)
             .success(function (lessonItems, status, headers) {
-                var pgs = makePageMap(headers('link'));
+               var pgs = makePageMap(headers('link'));
 
-                countItemTypes(lessonItems);
-                $scope.pages = pgs;
-                $scope.pageNumbers = createArray(pgs.last);
-                $scope.lessonItems = lessonItems;
+               countItemTypes(lessonItems);
+               $scope.pages = pgs;
+               $scope.pageNumbers = createArray(pgs.last);
+               $scope.lessonItems = lessonItems;
+
+               moduleMetadata.get($routeParams.id2)
+               .success(function(meta) {
+                 $scope.module.learningObjectives = meta;
+               });
+
             });
         });
     }
