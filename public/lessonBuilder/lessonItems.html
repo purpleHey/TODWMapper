@@ -1,5 +1,5 @@
 <table class="table table-striped">
-  <pre>{{showContentType}}</pre>
+  <pre>{{radioModel}}</pre>
   <h1>Unit - {{module.name}}</h1>
   <span>
     <div class="alert alert-info">
@@ -15,14 +15,11 @@
     </div>
   </span>
   <div class="btn-group">
-    <label class="btn btn-primary" ng-model="showContentType.All" btn-checkbox>All</label>
-  </div>
-  <div class="btn-group">
-    <label class="btn btn-primary" ng-model="showContentType.Lesson" btn-checkbox>Lesson</label>
-    <label class="btn btn-primary" ng-model="showContentType.ContentItem" btn-checkbox>Content</label>
-    <label class="btn btn-primary" ng-model="showContentType.Quiz" btn-checkbox>Quiz</label>
-    <label class="btn btn-primary" ng-model="showContentType.Discussion" btn-checkbox>Discussions</label>
-    <label class="btn btn-primary" ng-model="showContentType.Assignment" btn-checkbox>Assignment</label>
+    <label class="btn btn-primary" ng-model="radioModel" btn-radio="'All'">All</label>
+    <label class="btn btn-primary" ng-model="radioModel" btn-radio="'Lesson'">Lesson</label>
+    <label class="btn btn-primary" ng-model="radioModel" btn-radio="'Quiz'">Quiz</label>
+    <label class="btn btn-primary" ng-model="radioModel" btn-radio="'Discussion'">Discussions</label>
+    <label class="btn btn-primary" ng-model="radioModel" btn-radio="'Assignment'">Assignment</label>
   </div>
 
 	<tr ng-repeat="contentItem in filtered = (lessonItems | filter: matchType(query))">

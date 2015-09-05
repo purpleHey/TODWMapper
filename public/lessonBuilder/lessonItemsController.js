@@ -1,33 +1,20 @@
 angular.module('newApp')
 .controller('lessonItems', function(modules, moduleItems, moduleMetadata, unitItems, $scope, $routeParams){
-    $scope.showContentType = {
-        All: false,
-        Lesson: true,
-        Discussion: false,
-        Assignment: false,
-        ContentItem: false,
-        Quiz: false
-    };
+
+    $scope.radioModel = 'Lesson';
 
     $scope.matchType = function(query) {
       return function(contentItem) {
-        var showItem = false;
-        if($scope.showContentType.All) 
+        if($scope.radioModel === 'All') 
             return true;
-        else if($scope.showContentType.Lesson && contentItem.type.match("SubHeader"))
-            showItem = true;
-        else if($scope.showContentType.ContentItem &&
-                    (contentItem.type.match("Page")  ||
-                     contentItem.type.match("External") ||
-                     contentItem.type.match("File")))
-            showItem = true;
-        else if($scope.showContentType.Assignment && contentItem.type.match("Assignment"))
-            showItem = true;
-        else if($scope.showContentType.Quiz && contentItem.type.match("Quiz"))
-            showItem = true;
-        else if($scope.showContentType.Discussion && contentItem.type.match("Discussion"))
-            showItem = true;
-        return showItem;
+        else if($scope.radioModel === 'Lesson')
+            return contentItem.type.match('SubHeader');
+        else if($scope.radioModel === 'Quiz')
+            return contentItem.type.match('Quiz');
+        else if($scope.radioModel === 'Assignment')
+            return contentItem.type.match('Assignment');
+        else if($scope.radioModel === 'Discussion')
+            return contentItem.type.match('Discussion');
         }
     };
  
