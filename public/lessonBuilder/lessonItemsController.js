@@ -99,40 +99,45 @@ angular.module('newApp')
 
         // var mods = modules.getAll($routeParams.id);
         
-        modules.getAll($routeParams.id)
-        .success(function(modules, status, headers) {
-            // 
-            for(i = 0; i < modules.length; i++) {
-                if(modules[i].id == $routeParams.id2) {
-                    $scope.module = modules[i];
-                    teacherRes = findTeacherRes(modules, modules[i].name);
-                }
-            }
-            return moduleItems.get($routeParams.id, teacherRes.id, 1);
-        }).success(function(teacherUnitItems, status, headers) {
-            moduleItems.get($routeParams.id, $routeParams.id2, 1)
-            .success(function(unitItems, status, headers) {
-                $scope.lessonItems = unitItems;
-                countItemTypes(unitItems);
-                for(i = 0; i < teacherUnitItems.length; i++) {
-                    if(teacherUnitItems[i].type === "Page") {
-                        var regEx = /(.*):/;
-                        var lessonName = regEx.exec(teacherUnitItems[i].title);
-                        for(j = 0; j < unitItems.length; j++) {
-                            // console.log(unitItems[j]);
-                            if(unitItems[j].type === "SubHeader" &&
-                                   (unitItems[j].title.search(lessonName[1]) != -1)) {
-                                unitItems[j].lessonPlanID = teacherUnitItems[i].id;
-                                unitItems[j].lessonPlanUrl = teacherUnitItems[i].html_url;
-                                console.log("Lesson Plan ID", unitItems[j].lessonPlanID,
-                                    "URL: ", unitItems[j].lessonPlanUrl);
-                            }
-                        }
+        modules.get($routeParams.id, $routeParams.id2)
+        .success(function(module, status, headers) {
+
+            modules.getAll($routeParams.id)
+            .success(function(modules, status, headers) {
+                // 
+                for(i = 0; i < modules.length; i++) {
+                    if(modules[i].id == $routeParams.id2) {
+                        $scope.module = modules[i];
+                        teacherRes = findTeacherRes(modules, module.name);
                     }
                 }
-                moduleMetadata.get($routeParams.id2)
-                .success(function(meta, status, headers) {
-                    $scope.module.learningObjectives = meta;
+                moduleItems.get($routeParams.id, teacherRes.id, 1)
+                .success(function(teacherUnitItems, status, headers) {
+                    moduleItems.get($routeParams.id, $routeParams.id2, 1)
+                    .success(function(unitItems, status, headers) {
+                        $scope.lessonItems = unitItems;
+                        countItemTypes(unitItems);
+                        for(i = 0; i < teacherUnitItems.length; i++) {
+                            if(teacherUnitItems[i].type === "Page") {
+                                var regEx = /(.*):/;
+                                var lessonName = regEx.exec(teacherUnitItems[i].title);
+                                for(j = 0; j < unitItems.length; j++) {
+                                    // console.log(unitItems[j]);
+                                    if(unitItems[j].type === "SubHeader" &&
+                                           (unitItems[j].title.search(lessonName[1]) != -1)) {
+                                        unitItems[j].lessonPlanID = teacherUnitItems[i].id;
+                                        unitItems[j].lessonPlanUrl = teacherUnitItems[i].html_url;
+                                        console.log("Lesson Plan ID", unitItems[j].lessonPlanID,
+                                            "URL: ", unitItems[j].lessonPlanUrl);
+                                    }
+                                }
+                            }
+                        }
+                        moduleMetadata.get($routeParams.id2)
+                        .success(function(meta, status, headers) {
+                            $scope.module.learningObjectives = meta;
+                        })
+                    })
                 })
             })
 
