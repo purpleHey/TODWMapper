@@ -27,6 +27,7 @@
 
 	<tr ng-repeat="contentItem in filtered = (lessonItems | filter: matchType(query))">
 		<td>{{contentItem.title}}</td>
+    <td><a href="{{contentItem.lessonPlanUrl}}">{{contentItem.lessonPlanID}}</a></td>
 		<td>{{contentItem.type}}</td>
 	</tr>
 </table>
