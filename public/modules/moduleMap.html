@@ -18,7 +18,7 @@
         <accordion-group heading="{{eus.description}}" is-open=!isCollapsed ng-click="isCollapsed=!isCollapsed">
           <table class="table" ng-repeat="lo in eus.children | filter:searchText">
             <tr>
-              <td class="text-left">{{lo.description}}</td>
+              <td class="text-left">{{lo.id}} - {{lo.description}}</td>
               <td>
                 <button class="button pull-right" ng-click="toggleLOinUnit(lo.id); isAdded = !isAdded">
                   {{isAdded ? "Remove" : "Add"}}
