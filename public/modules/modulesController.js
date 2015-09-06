@@ -8,12 +8,23 @@ angular.module('newApp')
     }
 
     courses.get($routeParams.id)
-    .success(function (course) {
-        $scope.course = course;
-    });
-    modules.getAll($routeParams.id)
-    .success(function (modules, status, headers) {
+    .then(function (course) {
+        $scope.course = course.data;
+
+        return modules.getAll($routeParams.id);
+
+    }).then(function (modules) {
+    
+        modules = modules.data;
+
+        modules = modules.filter(function(module) {
+                // -1 => string not found.
+            return (module.name.indexOf("Teacher Resources") === -1);
+        });
+
         $scope.modules = modules;
+        // $scope.numUnits = modules.length;
+
         // Now that modules has been attached to the $scope, get the module
         // metadata and attach the learning objectives to the appropriate 
         // module based on the moduleID.
@@ -22,15 +33,18 @@ angular.module('newApp')
         //       either need to be done serially (which is what we're done here inside the
         //       .success block of the previous request), or you have to use promise's to 
         //       syncronize the requests.  If you don't there would be a race condition.
-        moduleMetadata.getAll()
-        .success(function(data) {
+
+        return moduleMetadata.getAll();
+    }).then(function(retData) {
+            data = retData.data;
             data.forEach(function(meta) {
                 var module = find($scope.modules, meta.moduleID);
 
                 if(module)
                     module.learningObjectives = (module.learningObjectives || []).concat(meta.learningObjective);
             });
-        });
+    }, function(xhr, status, error) {
+        // do something with errors
     });
 
     $scope.open = function (size, module) {
