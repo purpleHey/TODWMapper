@@ -1,39 +1,70 @@
 angular.module('newApp')
-.controller('modalModuleMap', function($scope, $modalInstance, CSPFrameworkMap, unitLOs, moduleName){
-    $scope.unit = 1;
-    $scope.moduleName = moduleName;
-    // create a copy...
-    $scope.unitLOs = [];
+.controller('modalModuleMap', function($scope, $modalInstance, $routeParams, $q,
+                                       cspFramework, module, tags) {
+    function clone (data, isDeep) {
+        if (Array.isArray(data)) {
+            var clonedArray = data.slice();
+            return isDeep ? clonedArray.map(clone) : clonedArray;
+        } else {
+            return Object.keys(data).reduce(function (object, key) {
+                var value = data[key];
+                object[key] = typeof value === 'object' ? clone(value, isDeep) : value;
+                return object;
+            }, {});
+        }
+    }
 
-    if(unitLOs)
-      $scope.unitLOs = unitLOs.slice();
+    function pluck (array, key) {
+        return array.map(function (object) {
+            return object[key];
+        });
+    }
 
-    CSPFrameworkMap.get()
-    .success(function(unitMap) {
-        $scope.bigIdeas = unitMap;
-    })
+    var courseId = parseInt($routeParams.id, 10);
+
+    module.tags || (module.tags = []);
+    var originalTags = clone(module.tags, true);
+    $scope.module = module;
+
+    cspFramework.all().then(function(framework) {
+        $scope.bigIdeas = framework;
+    });
 
     $scope.toggleLOinUnit = function(loID){
         // see if the lo is already in the list...
-        var index = $scope.unitLOs.indexOf(loID);
+        var index = pluck($scope.module.tags, 'content').indexOf(loID);
         if(index === -1) {
             // THis LO is not in the unit, so add it.
-            $scope.unitLOs.push(loID);
+            $scope.module.tags.push({
+                courseId: courseId,
+                unitId: module.id,
+                content: loID
+            });
         } else {
-            $scope.unitLOs.splice(index, 1);
+            $scope.module.tags.splice(index, 1);
         }
     };
 
-  $scope.ok = function () {
-    // var loIDs = [];
-    // for(i = 0; i < $scope.unitLOs.length; i++) {
-    //     loIDs[i] = $scope.unitLOs[i].id;
-    // }
-    $modalInstance.close($scope.unitLOs);
-  };
+    $scope.ok = function () {
+        var currentTags = $scope.module.tags;
+        var existingTags = currentTags.filter(function (tag) {
+            return tag.hasOwnProperty('_id');
+        });
+        var unsavedTags = currentTags.filter(function (tag) {
+            return !tag.hasOwnProperty('_id');
+        });
+        var removedTags = originalTags.filter(function (tag) {
+            return currentTags.indexOf(tag) === -1;
+        });
+        // TODO: track creations and deletions in the modal to provide updates
+        removedTags.map(tags.delete);
+        $q.all(unsavedTags.map(tags.create)).then(function (savedTags) {
+            $modalInstance.close(pluck(savedTags, 'data').concat(existingTags));
+        });
+    };
 
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
 });
 

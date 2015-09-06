@@ -1,23 +1,23 @@
 angular.module('newApp')
-.controller('lessonItems', function(modules, moduleItems, moduleMetadata, unitItems, $scope, $routeParams){
+.controller('lessonItems', function(modules, moduleItems, tags, $scope, $routeParams){
 
     $scope.radioModel = 'Lesson';
 
     $scope.matchType = function(query) {
-      return function(contentItem) {
-        if($scope.radioModel === 'All') 
-            return true;
-        else if($scope.radioModel === 'Lesson')
-            return contentItem.type.match('SubHeader');
-        else if($scope.radioModel === 'Quiz')
-            return contentItem.type.match('Quiz');
-        else if($scope.radioModel === 'Assignment')
-            return contentItem.type.match('Assignment');
-        else if($scope.radioModel === 'Discussion')
-            return contentItem.type.match('Discussion');
+        return function(contentItem) {
+            if($scope.radioModel === 'All') 
+                return true;
+            else if($scope.radioModel === 'Lesson')
+                return contentItem.type.match('SubHeader');
+            else if($scope.radioModel === 'Quiz')
+                return contentItem.type.match('Quiz');
+            else if($scope.radioModel === 'Assignment')
+                return contentItem.type.match('Assignment');
+            else if($scope.radioModel === 'Discussion')
+                return contentItem.type.match('Discussion');
         }
     };
- 
+
     function makePageMap(headers) {
         var pageObjs = {};
         var pageArr = headers.split(',').map(function(str) {
@@ -63,65 +63,65 @@ angular.module('newApp')
     }
 
     function findTeacherRes(modules, moduleName) {
-      for(i = 0; i < modules.length; i++) {
-        // find the module tha has moduleName AND "Teacher" in it.
-        if((modules[i].name.indexOf(moduleName) !== -1) &&
-              (modules[i].name.indexOf("Teacher") !== -1))
-          return modules[i];
-      }
+        for(i = 0; i < modules.length; i++) {
+            // find the module tha has moduleName AND "Teacher" in it.
+            if((modules[i].name.indexOf(moduleName) !== -1) &&
+               (modules[i].name.indexOf("Teacher") !== -1))
+                return modules[i];
+        }
     }
 
     // console.log($routeParams.id);
     $scope.loadPage = function(pageNum) {
 
-    modules.get($routeParams.id, $routeParams.id2)
-    .then(function(retData) {
-      module = retData.data;    
-      return modules.getAll($routeParams.id);
-    }).then(function(retData) {
-      modules = retData.data;
-      // Find the teacher Resource unit for the Unit i.e. the unit with the same
-      // name as the current unit, with "Teacher Resources" in the name.
-      for(i = 0; i < modules.length; i++) {
-        if(modules[i].id == $routeParams.id2) {
-          $scope.module = modules[i];
-          teacherRes = findTeacherRes(modules, module.name);
-        }
-      }
-      return moduleItems.get($routeParams.id, teacherRes.id, 1);
-    }).then(function(retData) {
-      teacherUnitItems = retData.data;
-      return moduleItems.get($routeParams.id, $routeParams.id2, 1);
-    }).then(function(retData) {
-      unitItems = retData.data;
-      $scope.lessonItems = unitItems;
-      countItemTypes(unitItems);
-      for(i = 0; i < teacherUnitItems.length; i++) {
-        if(teacherUnitItems[i].type === "Page") {
-         // find the Unit lesson name, which is the first few characters
-         // up to the ":" in the title of the item i.e. "DM 1: BLah",
-         // "DM 1" is the lesson name.
-          var regEx = /(.*):/;
-          var lessonGrp = regEx.exec(teacherUnitItems[i].title);
-          lessonName = lessonGrp[1].toLowerCase();
-          for(j = 0; j < unitItems.length; j++) {
-            // using toLowerCasse to make the matching case insensitive.
-            var contentItemTitleStr = unitItems[j].title.toLowerCase();
-            if(unitItems[j].type === "SubHeader" &&
-                           (contentItemTitleStr.indexOf(lessonName) !== -1)) {
-              unitItems[j].lessonPlanID = teacherUnitItems[i].id;
-              unitItems[j].lessonPlanUrl = teacherUnitItems[i].html_url;
+        modules.get($routeParams.id, $routeParams.id2)
+        .then(function(retData) {
+            module = retData.data;    
+            return modules.getAll($routeParams.id);
+        }).then(function(retData) {
+            modules = retData.data;
+            // Find the teacher Resource unit for the Unit i.e. the unit with the same
+            // name as the current unit, with "Teacher Resources" in the name.
+            for(i = 0; i < modules.length; i++) {
+                if(modules[i].id == $routeParams.id2) {
+                    $scope.module = modules[i];
+                    teacherRes = findTeacherRes(modules, module.name);
+                }
             }
-          }
-        }
-      }
-      return moduleMetadata.get($routeParams.id2);
-      }).then(function(retData) {
-        $scope.module.learningObjectives = retData.data;
+            return moduleItems.get($routeParams.id, teacherRes.id, 1);
+        }).then(function(retData) {
+            teacherUnitItems = retData.data;
+            return moduleItems.get($routeParams.id, $routeParams.id2, 1);
+        }).then(function(retData) {
+            unitItems = retData.data;
+            $scope.lessonItems = unitItems;
+            countItemTypes(unitItems);
+            for(i = 0; i < teacherUnitItems.length; i++) {
+                if(teacherUnitItems[i].type === "Page") {
+                    // find the Unit lesson name, which is the first few characters
+                    // up to the ":" in the title of the item i.e. "DM 1: BLah",
+                    // "DM 1" is the lesson name.
+                    var regEx = /(.*):/;
+                    var lessonGrp = regEx.exec(teacherUnitItems[i].title);
+                    lessonName = lessonGrp[1].toLowerCase();
+                    for(j = 0; j < unitItems.length; j++) {
+                        // using toLowerCasse to make the matching case insensitive.
+                        var contentItemTitleStr = unitItems[j].title.toLowerCase();
+                        if(unitItems[j].type === "SubHeader" &&
+                           (contentItemTitleStr.indexOf(lessonName) !== -1)) {
+                            unitItems[j].lessonPlanID = teacherUnitItems[i].id;
+                        unitItems[j].lessonPlanUrl = teacherUnitItems[i].html_url;
+                        }
+                    }
+                }
+            }
+            return tags.search({ unitId: $routeParams.id2 });
+        }).then(function(retData) {
+            $scope.module.tags = retData.data;
 
-    }, function(xhr, state, error) {
-        console.log(arguments);
-    });
-}
-$scope.loadPage(1);
+        }, function(xhr, state, error) {
+            console.log(arguments);
+        });
+    }
+    $scope.loadPage(1);
 });

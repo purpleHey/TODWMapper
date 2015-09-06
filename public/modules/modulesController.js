@@ -1,5 +1,5 @@
 angular.module('newApp')
-.controller('modules', function(courses, modules, moduleMetadata, $modal, $log, $scope, $routeParams, $http){
+.controller('modules', function(courses, modules, tags, $modal, $log, $scope, $routeParams, $http){
     function find(modules, courseID) {
         for(i = 0; i < modules.length; i++) {
             if(modules[i].id === courseID)
@@ -34,46 +34,35 @@ angular.module('newApp')
         //       .success block of the previous request), or you have to use promise's to 
         //       syncronize the requests.  If you don't there would be a race condition.
 
-        return moduleMetadata.getAll();
-    }).then(function(retData) {
-            data = retData.data;
-            data.forEach(function(meta) {
-                var module = find($scope.modules, meta.moduleID);
+        return tags.search();
+    }).then(function(response) {
+        response.data.forEach(function(tag) {
+            var module = find($scope.modules, tag.unitId);
 
-                if(module)
-                    module.learningObjectives = (module.learningObjectives || []).concat(meta.learningObjective);
-            });
+            if(module)
+                module.tags = (module.tags || []).concat(tag);
+        });
     }, function(xhr, status, error) {
         // do something with errors
     });
 
     $scope.open = function (size, module) {
 
-      var modalInstance = $modal.open({
-        animation: true,
-        templateUrl: 'modules/moduleMap.html',
-        controller: 'modalModuleMap',
-        size: size,
-        resolve: {
-          unitLOs: function () {
-            return module.learningObjectives;
-          },
-          moduleName: function() {
-            return module.name;
-          }
-        }
-      });
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: 'modules/moduleMap.html',
+            controller: 'modalModuleMap',
+            size: size,
+            resolve: {
+                module: function () { return module; }
+            }
+        });
 
-      modalInstance.result.then(function (unitLOs) {
-        $http.put('/api/units/'+module.id, unitLOs)
-            .success(function(units) {
-                module.learningObjectives = units.map(function (unit) {
-                    return unit.learningObjective;
-                });
-            });
-      }, function () {
-        $log.info('Modal canceled at: ' + new Date());
-      });
+        modalInstance.result.then(function (tags) {
+            module.tags = tags;
+        }, function () {
+            $log.info('Modal canceled at: ' + new Date());
+        });
     };
 });
 
