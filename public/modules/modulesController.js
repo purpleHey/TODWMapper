@@ -19,7 +19,7 @@ angular.module('newApp')
 
         modules = modules.filter(function(module) {
                 // -1 => string not found.
-            return (module.name.search("Teacher Resources") === -1);
+            return (module.name.indexOf("Teacher Resources") === -1);
         });
 
         $scope.modules = modules;
