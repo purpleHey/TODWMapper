@@ -63,13 +63,12 @@ angular.module('newApp')
     }
 
     function findTeacherRes(modules, moduleName) {
-        for(i = 0; i < modules.length; i++) {
-            // find the module tha has moduleName AND "Teacher" in it.
-            if(modules[i].name.search(moduleName) != -1) {
-                if(modules[i].name.search("Teacher") != -1)
-                    return modules[i];
-            }
-        }
+      for(i = 0; i < modules.length; i++) {
+        // find the module tha has moduleName AND "Teacher" in it.
+        if((modules[i].name.indexOf(moduleName) !== -1) &&
+              (modules[i].name.indexOf("Teacher") !== -1))
+          return modules[i];
+      }
     }
 
     // console.log($routeParams.id);
