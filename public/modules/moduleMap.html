@@ -1,9 +1,9 @@
 <div class="modalBody">
-  <h2>{{module.name}} - Learning Objectives Map</h2>
+  <h2>{{moduleName}} - Learning Objectives Map</h2>
 
   <form role="form" ng-submit="addLOs()">
 
-    <learning-objective ng-repeat="tag in module.tags" expanded id="{{tag.content}}"></learning-objective>
+    <learning-objective ng-repeat="content in contents" expanded id="{{content}}"></learning-objective>
     <h2>CSP Framework</h2>
 
     <label>Search: <input ng-model="searchText"></label>

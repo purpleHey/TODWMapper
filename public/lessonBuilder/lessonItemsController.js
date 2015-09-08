@@ -62,6 +62,48 @@ angular.module('newApp')
         }
     }
 
+    function pick (object, keys) {
+        return keys.reduce(function (newObject, key) {
+            newObject[key] = object[key];
+            return newObject;
+        }, {});
+    }
+
+    function matches (a, b) {
+        return Object.keys(a).every(function (key) {
+            return a[key] === b[key];
+        });
+    }
+
+    function find (array, params) {
+        var i = 0;
+        while (array[i] && !matches(params, array[i])) {
+            i++;
+        }
+        return array[i];
+    }
+
+    function pluck (array, key) {
+        return array.map(function (object) {
+            return object[key];
+        });
+    }
+
+    $scope.toggleDropZones = function (isShown) {
+        $scope.showDropZones = isShown;
+    };
+
+    $scope.onDrop = function (tag, activity) {
+        activity.tags || (activity.tags = []);
+        if (pluck(activity.tags, 'content').indexOf(tag.content) === -1) {
+            var newTag = pick(tag, ['courseId', 'unitId', 'content']);
+            newTag.activityId = activity.id;
+            tags.create(newTag).then(function (response) {
+                activity.tags.push(response.data);
+            });
+        }
+    };
+
     // console.log($routeParams.id);
     $scope.loadPage = function(pageNum) {
 
@@ -75,6 +117,14 @@ angular.module('newApp')
             $scope.lessonItems = responses[1].data;
             countItemTypes($scope.lessonItems);
             $scope.module.tags = responses[2].data;
+
+            $scope.module.tags.forEach(function (tag) {
+                if (tag.activityId) {
+                    var activity = find($scope.lessonItems, { id: tag.activityId });
+                    activity.tags || (activity.tags = []);
+                    activity.tags.push(tag);
+                }
+            });
 
             lessonPlanItems.match($routeParams.id, $routeParams.id2, $scope.module, $scope.lessonItems);
         });
