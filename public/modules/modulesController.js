@@ -31,12 +31,15 @@ angular.module('newApp')
     }).then(function(response) {
         var tags = response.data;
 
-        $scope.numLOsTaught = tags.filter(function (tag) {
+        var lessonTags = tags.filter(function (tag) {
             return tag.activityType === 'SubHeader';
-        }).length;
-        $scope.numLOsAssessed = tags.filter(function (tag) {
+        });
+        $scope.numLOsTaught = utils.unique(utils.pluck(lessonTags, 'content')).length;
+
+        var quizTags = tags.filter(function (tag) {
             return tag.activityType === 'Quiz';
-        }).length;
+        });
+        $scope.numLOsAssessed = utils.unique(utils.pluck(quizTags, 'content')).length;
 
         tags.forEach(function(tag) {
             var module = utils.find($scope.modules, { id: tag.unitId });
