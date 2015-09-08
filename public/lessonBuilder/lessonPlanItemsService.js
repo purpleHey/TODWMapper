@@ -41,7 +41,7 @@ angular.module('newApp')
               if(activities[j].type === "SubHeader" &&
                (contentItemTitleStr.indexOf(lessonName) !== -1)) {
                 activities[j].lessonPlanID = teacherUnitItems[i].id;
-                activities[j].lessonPlanUrl = teacherUnitItems[i].html_url;
+                activities[j].lessonPlanUrl = teacherUnitItems[i].page_url;
               }
             }
           }

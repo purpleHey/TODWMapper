@@ -1,5 +1,5 @@
 angular.module('newApp')
-.controller('lessonItems', function(modules, moduleItems, tags, lessonPlanItems, $q, $scope, $routeParams){
+.controller('lessonItems', function(modules, moduleItems, tags, lessonPlanItems, $modal, $q, $scope, $routeParams){
 
     $scope.radioModel = 'Lesson';
 
@@ -76,6 +76,19 @@ angular.module('newApp')
             });
         }
     };
+
+   $scope.open = function (page_url) {
+
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: 'modules/page.html',
+            controller: 'pages',
+            size: 'lg',
+            resolve: {
+                page_url: function () { return page_url; }
+            }
+        });
+    }
 
     // console.log($routeParams.id);
     $scope.loadPage = function(pageNum) {

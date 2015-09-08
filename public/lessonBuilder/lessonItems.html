@@ -49,7 +49,9 @@
   <tbody>
     <tr ng-repeat="contentItem in filtered = (lessonItems | filter: matchType(query))">
       <td>{{contentItem.title}}</td>
-      <td><a href="{{contentItem.lessonPlanUrl}}">{{contentItem.lessonPlanID}}</a></td>
+      <td>
+        <button class="btn btn-primary" ng-click="open(contentItem.lessonPlanUrl)">{{contentItem.lessonPlanID}}</button>
+      </td>
       <td>{{contentItem.type}}</td>
       <td>
         <learning-objective id="{{tag.content}}" ng-repeat="tag in contentItem.tags"></learning-objective>
