@@ -1,6 +1,7 @@
 angular.module('newApp')
 .controller('modalModuleMap', function($scope, $modalInstance, $routeParams, $q,
                                        cspFramework, module, tags) {
+    module.tags || (module.tags = []);
     var courseId = parseInt($routeParams.id, 10);
     var originalContents = utils.unique(utils.pluck(module.tags, 'content'));
     $scope.contents = utils.clone(originalContents);

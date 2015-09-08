@@ -1,27 +1,21 @@
 angular.module('newApp')
 .controller('modules', function(courses, modules, tags, $modal, $log, $scope, $routeParams, $http){
 
+    $scope.numLOs = 42;
+
     courses.get($routeParams.id)
     .then(function (course) {
         $scope.course = course.data;
 
         return modules.getAll($routeParams.id);
 
-    }).then(function (modules) {
+    }).then(function (response) {
     
-        modules = modules.data;
-
-        modules = modules.filter(function(module) {
+        $scope.modules = response.data.filter(function(module) {
                 // -1 => string not found.
             return (module.name.indexOf("Teacher Resources") === -1);
         });
 
-        $scope.modules = modules;
-        $scope.numLOs = 42;
-        $scope.numLOsTaught = 25;
-        $scope.percentTaught = Math.round($scope.numLOsTaught/$scope.numLOs*100);
-        $scope.numLOsAssessed = 4;
-        $scope.percentAssessed = Math.round($scope.numLOsAssessed/$scope.numLOs*100);
         // $scope.numUnits = modules.length;
 
         // Now that modules has been attached to the $scope, get the module
@@ -35,7 +29,19 @@ angular.module('newApp')
 
         return tags.search();
     }).then(function(response) {
-        response.data.forEach(function(tag) {
+        var tags = response.data;
+
+        var lessonTags = tags.filter(function (tag) {
+            return tag.activityType === 'SubHeader';
+        });
+        $scope.numLOsTaught = utils.unique(utils.pluck(lessonTags, 'content')).length;
+
+        var quizTags = tags.filter(function (tag) {
+            return tag.activityType === 'Quiz';
+        });
+        $scope.numLOsAssessed = utils.unique(utils.pluck(quizTags, 'content')).length;
+
+        tags.forEach(function(tag) {
             var module = utils.find($scope.modules, { id: tag.unitId });
 
             if(module)

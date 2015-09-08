@@ -18,6 +18,10 @@ fields.content = {
     required: true
 };
 
+fields.activityType = {
+    type: String
+};
+
 var tagSchema = new mongoose.Schema(fields);
 
 tagSchema.pre('validate', function (next) {
