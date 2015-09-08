@@ -1,34 +1,9 @@
 angular.module('newApp')
 .controller('modalModuleMap', function($scope, $modalInstance, $routeParams, $q,
                                        cspFramework, module, tags) {
-    function clone (data, isDeep) {
-        if (Array.isArray(data)) {
-            var clonedArray = data.slice();
-            return isDeep ? clonedArray.map(clone) : clonedArray;
-        } else {
-            return Object.keys(data).reduce(function (object, key) {
-                var value = data[key];
-                object[key] = typeof value === 'object' ? clone(value, isDeep) : value;
-                return object;
-            }, {});
-        }
-    }
-
-    function pluck (array, key) {
-        return array.map(function (object) {
-            return object[key];
-        });
-    }
-
-    function unique (array) {
-        return array.filter(function (element, i) {
-            return array.indexOf(element) === i;
-        });
-    }
-
     var courseId = parseInt($routeParams.id, 10);
-    var originalContents = unique(pluck(module.tags, 'content'));
-    $scope.contents = clone(originalContents);
+    var originalContents = utils.unique(utils.pluck(module.tags, 'content'));
+    $scope.contents = utils.clone(originalContents);
     $scope.moduleName = module.name;
 
     cspFramework.all().then(function(framework) {
@@ -66,7 +41,7 @@ angular.module('newApp')
         // TODO: track creations and deletions in the modal to provide updates
         removedTags.map(tags.delete);
         $q.all(unsavedTags.map(tags.create)).then(function (newTags) {
-            $modalInstance.close(pluck(newTags, 'data').concat(savedTags));
+            $modalInstance.close(utils.pluck(newTags, 'data').concat(savedTags));
         });
     };
 

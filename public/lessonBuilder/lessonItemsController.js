@@ -62,41 +62,14 @@ angular.module('newApp')
         }
     }
 
-    function pick (object, keys) {
-        return keys.reduce(function (newObject, key) {
-            newObject[key] = object[key];
-            return newObject;
-        }, {});
-    }
-
-    function matches (a, b) {
-        return Object.keys(a).every(function (key) {
-            return a[key] === b[key];
-        });
-    }
-
-    function find (array, params) {
-        var i = 0;
-        while (array[i] && !matches(params, array[i])) {
-            i++;
-        }
-        return array[i];
-    }
-
-    function pluck (array, key) {
-        return array.map(function (object) {
-            return object[key];
-        });
-    }
-
     $scope.toggleDropZones = function (isShown) {
         $scope.showDropZones = isShown;
     };
 
     $scope.onDrop = function (tag, activity) {
         activity.tags || (activity.tags = []);
-        if (pluck(activity.tags, 'content').indexOf(tag.content) === -1) {
-            var newTag = pick(tag, ['courseId', 'unitId', 'content']);
+        if (utils.pluck(activity.tags, 'content').indexOf(tag.content) === -1) {
+            var newTag = utils.pick(tag, ['courseId', 'unitId', 'content']);
             newTag.activityId = activity.id;
             tags.create(newTag).then(function (response) {
                 activity.tags.push(response.data);
@@ -120,7 +93,7 @@ angular.module('newApp')
 
             $scope.module.tags.forEach(function (tag) {
                 if (tag.activityId) {
-                    var activity = find($scope.lessonItems, { id: tag.activityId });
+                    var activity = utils.find($scope.lessonItems, { id: tag.activityId });
                     activity.tags || (activity.tags = []);
                     activity.tags.push(tag);
                 }

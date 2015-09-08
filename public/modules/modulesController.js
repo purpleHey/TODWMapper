@@ -1,11 +1,5 @@
 angular.module('newApp')
 .controller('modules', function(courses, modules, tags, $modal, $log, $scope, $routeParams, $http){
-    function find(modules, courseID) {
-        for(i = 0; i < modules.length; i++) {
-            if(modules[i].id === courseID)
-                return modules[i];
-        }
-    }
 
     courses.get($routeParams.id)
     .then(function (course) {
@@ -42,7 +36,7 @@ angular.module('newApp')
         return tags.search();
     }).then(function(response) {
         response.data.forEach(function(tag) {
-            var module = find($scope.modules, tag.unitId);
+            var module = utils.find($scope.modules, { id: tag.unitId });
 
             if(module)
                 module.tags = (module.tags || []).concat(tag);
