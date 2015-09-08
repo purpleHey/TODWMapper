@@ -71,6 +71,7 @@ angular.module('newApp')
         if (utils.pluck(activity.tags, 'content').indexOf(tag.content) === -1) {
             var newTag = utils.pick(tag, ['courseId', 'unitId', 'content']);
             newTag.activityId = activity.id;
+            newTag.activityType = activity.type;
             tags.create(newTag).then(function (response) {
                 activity.tags.push(response.data);
             });
