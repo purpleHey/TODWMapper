@@ -1,0 +1,17 @@
+[ng-drag] {
+  padding: 0px 5px;
+  display: inline-block;
+}
+
+[ng-drop] {
+  width: 50px;
+  height: 30px;
+  display: inline-block;
+  vertical-align: top;
+  background-color: #eee;
+  border: 1px dotted #ccc;
+}
+
+[ng-drop].drag-enter {
+  border: 2px dotted #777;
+}

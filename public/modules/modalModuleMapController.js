@@ -20,11 +20,16 @@ angular.module('newApp')
         });
     }
 
-    var courseId = parseInt($routeParams.id, 10);
+    function unique (array) {
+        return array.filter(function (element, i) {
+            return array.indexOf(element) === i;
+        });
+    }
 
-    module.tags || (module.tags = []);
-    var originalTags = clone(module.tags, true);
-    $scope.module = module;
+    var courseId = parseInt($routeParams.id, 10);
+    var originalContents = unique(pluck(module.tags, 'content'));
+    $scope.contents = clone(originalContents);
+    $scope.moduleName = module.name;
 
     cspFramework.all().then(function(framework) {
         $scope.bigIdeas = framework;
@@ -32,34 +37,36 @@ angular.module('newApp')
 
     $scope.toggleLOinUnit = function(loID){
         // see if the lo is already in the list...
-        var index = pluck($scope.module.tags, 'content').indexOf(loID);
+        var index = $scope.contents.indexOf(loID);
         if(index === -1) {
             // THis LO is not in the unit, so add it.
-            $scope.module.tags.push({
-                courseId: courseId,
-                unitId: module.id,
-                content: loID
-            });
+            $scope.contents.push(loID);
         } else {
-            $scope.module.tags.splice(index, 1);
+            $scope.contents.splice(index, 1);
         }
     };
 
     $scope.ok = function () {
-        var currentTags = $scope.module.tags;
-        var existingTags = currentTags.filter(function (tag) {
-            return tag.hasOwnProperty('_id');
+        var existingContents = $scope.contents;
+        var unsavedTags = $scope.contents.filter(function (content) {
+            return originalContents.indexOf(content) === -1;
+        }).map(function (content) {
+            return {
+                courseId: courseId,
+                unitId: module.id,
+                content: content
+            }
         });
-        var unsavedTags = currentTags.filter(function (tag) {
-            return !tag.hasOwnProperty('_id');
+        var removedTags = module.tags.filter(function (tag) {
+            return existingContents.indexOf(tag.content) === -1;
         });
-        var removedTags = originalTags.filter(function (tag) {
-            return currentTags.indexOf(tag) === -1;
+        var savedTags = module.tags.filter(function (tag) {
+            return existingContents.indexOf(tag.content) !== -1;
         });
         // TODO: track creations and deletions in the modal to provide updates
         removedTags.map(tags.delete);
-        $q.all(unsavedTags.map(tags.create)).then(function (savedTags) {
-            $modalInstance.close(pluck(savedTags, 'data').concat(existingTags));
+        $q.all(unsavedTags.map(tags.create)).then(function (newTags) {
+            $modalInstance.close(pluck(newTags, 'data').concat(savedTags));
         });
     };
 

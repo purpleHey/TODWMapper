@@ -1,4 +1,4 @@
-<table class="table table-striped">
+<div>
   <pre>{{radioModel}}</pre>
   <h1>Unit - {{module.name}}</h1>
   <div class="container">
@@ -10,7 +10,14 @@
            <h4><span class="badge">{{numQuizes}}</span>Quizes</h4>
            <h4><span class="badge">{{numDiscussions}}</span>Discussions</h4>
            <h4><span class="badge">{{numAssignments}}</span> Assignments</h4>
-           <learning-objective id="{{tag.content}}" ng-repeat="tag in module.tags"></learning-objective>
+           <div
+             ng-drag="true"
+             ng-drag-data="tag"
+             ng-drag-start="toggleDropZones(true)"
+             ng-drag-stop="toggleDropZones(false)"
+             ng-repeat="tag in module.tags | unassigned">
+             <learning-objective id="{{tag.content}}" ></learning-objective>
+           </div>
         </div>
       </div>
       <div class="col-md-8">
@@ -28,11 +35,27 @@
     <label class="btn btn-primary" ng-model="radioModel" btn-radio="'Discussion'">Discussions</label>
     <label class="btn btn-primary" ng-model="radioModel" btn-radio="'Assignment'">Assignment</label>
   </div>
+</div>
 
-	<tr ng-repeat="contentItem in filtered = (lessonItems | filter: matchType(query))">
-		<td>{{contentItem.title}}</td>
-    <td><a href="{{contentItem.lessonPlanUrl}}">{{contentItem.lessonPlanID}}</a></td>
-		<td>{{contentItem.type}}</td>
-	</tr>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Lesson Item</th>
+      <th>Teacher Resource</th>
+      <th>Type</th>
+      <th>Learning Objectives</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="contentItem in filtered = (lessonItems | filter: matchType(query))">
+      <td>{{contentItem.title}}</td>
+      <td><a href="{{contentItem.lessonPlanUrl}}">{{contentItem.lessonPlanID}}</a></td>
+      <td>{{contentItem.type}}</td>
+      <td>
+        <learning-objective id="{{tag.content}}" ng-repeat="tag in contentItem.tags"></learning-objective>
+        <div ng-show="showDropZones" ng-drop="true" ng-drop-success="onDrop($data, contentItem)"></div>
+      </td>
+    </tr>
+  </tbody>
 </table>
 <span ng-repeat="i in pageNumbers" ng-click="loadPage(i)">{{i}}</span>

@@ -1,4 +1,4 @@
-angular.module('newApp', ['ngRoute', 'ui.bootstrap'])
+angular.module('newApp', ['ngRoute', 'ui.bootstrap', 'ngDraggable'])
 .config(function($routeProvider){
     $routeProvider
     .when('/csp-framework', {
