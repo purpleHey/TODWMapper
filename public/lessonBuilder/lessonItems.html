@@ -1,19 +1,26 @@
 <table class="table table-striped">
   <pre>{{radioModel}}</pre>
   <h1>Unit - {{module.name}}</h1>
-  <span>
-    <div class="alert alert-info">
-       <h4><span class="badge">{{numLessons}}</span> Lessons</h4>
-       <h4>{{numContentItems}} Lesson Items (Files, External, Page)</h4>
-       <h4><span class="badge">{{numQuizes}}</span>Quizes</h4>
-       <h4><span class="badge">{{numDiscussions}}</span>Discussions</h4>
-       <h4><span class="badge">{{numAssignments}}</span> Assignments</h4>
-       <learning-objective id="{{tag.content}}" ng-repeat="tag in module.tags"></learning-objective>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="alert alert-info">
+           <h4><span class="badge">{{numLessons}}</span> Lessons</h4>
+           <h4>{{numContentItems}} Lesson Items (Files, External, Page)</h4>
+           <h4><span class="badge">{{numQuizes}}</span>Quizes</h4>
+           <h4><span class="badge">{{numDiscussions}}</span>Discussions</h4>
+           <h4><span class="badge">{{numAssignments}}</span> Assignments</h4>
+           <learning-objective id="{{tag.content}}" ng-repeat="tag in module.tags"></learning-objective>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <img src="../media/DMSchedule.png" alt=""> 
+      </div>
     </div>
-    <div class="alert alert-info">
-       <h4>Total Filtered: {{filtered.length}}</h4>
-    </div>
-  </span>
+  </div>
+  <div class="alert alert-info">
+     <h4>Total Filtered: {{filtered.length}}</h4>
+  </div>
   <div class="btn-group">
     <label class="btn btn-primary" ng-model="radioModel" btn-radio="'All'">All</label>
     <label class="btn btn-primary" ng-model="radioModel" btn-radio="'Lesson'">Lesson</label>

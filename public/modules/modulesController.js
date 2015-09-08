@@ -23,6 +23,11 @@ angular.module('newApp')
         });
 
         $scope.modules = modules;
+        $scope.numLOs = 42;
+        $scope.numLOsTaught = 25;
+        $scope.percentTaught = Math.round($scope.numLOsTaught/$scope.numLOs*100);
+        $scope.numLOsAssessed = 4;
+        $scope.percentAssessed = Math.round($scope.numLOsAssessed/$scope.numLOs*100);
         // $scope.numUnits = modules.length;
 
         // Now that modules has been attached to the $scope, get the module
