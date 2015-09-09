@@ -1,3 +1,8 @@
+<style>
+    .table {
+        margin-bottom: 0px;
+    }
+</style>
 <div class="modalBody">
   <h2>{{moduleName}} - Learning Objectives Map</h2>
 
@@ -14,8 +19,7 @@
   
     <div ng-repeat="bigIdea in bigIdeas">
      {{bigIdea.description}}       
-      <accordion close-others="oneAtATime" class="panel panel-default" ng-repeat="eus in bigIdea.children">
-        <accordion-group heading="{{eus.description}}" is-open=!isCollapsed ng-click="isCollapsed=!isCollapsed">
+      <div ng-repeat="eus in bigIdea.children">
           <table class="table" ng-repeat="lo in eus.children | filter:searchText">
             <tr>
               <td class="text-left">{{lo.id}} - {{lo.description}}</td>
@@ -26,8 +30,7 @@
               </td>
             </tr>
           </table>
-        </accordion>
-      </accordion>
+      </div>
     </div>
   </form>
 </div>

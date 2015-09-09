@@ -34,14 +34,16 @@ angular.module('newApp')
             // "DM 1" is the lesson name.
             var regEx = /(.*):/;
             var lessonGrp = regEx.exec(teacherUnitItems[i].title);
-            lessonName = lessonGrp[1].toLowerCase();
-            for(j = 0; j < activities.length; j++) {
-              // using toLowerCasse to make the matching case insensitive.
-              var contentItemTitleStr = activities[j].title.toLowerCase();
-              if(activities[j].type === "SubHeader" &&
-               (contentItemTitleStr.indexOf(lessonName) !== -1)) {
-                activities[j].lessonPlanID = teacherUnitItems[i].id;
-                activities[j].lessonPlanUrl = teacherUnitItems[i].page_url;
+            if(lessonGrp){
+              var lessonName = lessonGrp[1].toLowerCase();
+              for(j = 0; j < activities.length; j++) {
+                // using toLowerCasse to make the matching case insensitive.
+                var contentItemTitleStr = activities[j].title.toLowerCase();
+                if(activities[j].type === "SubHeader" &&
+                 (contentItemTitleStr.indexOf(lessonName) !== -1)) {
+                  activities[j].lessonPlanID = teacherUnitItems[i].id;
+                  activities[j].lessonPlanUrl = teacherUnitItems[i].page_url;
+                }
               }
             }
           }

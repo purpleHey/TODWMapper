@@ -1,5 +1,5 @@
 angular.module('newApp')
-.controller('lessonItems', function(modules, moduleItems, tags, lessonPlanItems, $modal, $q, $scope, $routeParams){
+.controller('lessonItems', function(courses, modules, moduleItems, tags, lessonPlanItems, $modal, $q, $scope, $routeParams){
 
     $scope.radioModel = 'Lesson';
 
@@ -117,15 +117,17 @@ angular.module('newApp')
     $scope.loadPage = function(pageNum) {
 
         $q.all([
+            courses.get($routeParams.id),
             modules.get($routeParams.id, $routeParams.id2),
             moduleItems.get($routeParams.id, $routeParams.id2, 1),
             tags.search({ unitId: $routeParams.id2 })
         ])
         .then(function(responses) {
-            $scope.module = responses[0].data;
-            $scope.lessonItems = responses[1].data;
+            $scope.course = responses[0].data;
+            $scope.module = responses[1].data;
+            $scope.lessonItems = responses[2].data;
             countItemTypes($scope.lessonItems);
-            $scope.tags = responses[2].data;
+            $scope.tags = responses[3].data;
 
             lessonPlanItems.match($routeParams.id, $routeParams.id2, $scope.module, $scope.lessonItems);
         });
