@@ -1,2 +1,5 @@
-<span ng-if="!expanded" class="btn btn-info btn-sm" tooltip="{{description}}">{{id}}</span>
+<span ng-if="!expanded" class="btn btn-info btn-sm" tooltip="{{description}}">
+  <span>{{id}}</span>
+  <span ng-transclude></span>
+</span>
 <div class="btn btn-info" ng-if="expanded">{{id}} - {{description}}</div>
