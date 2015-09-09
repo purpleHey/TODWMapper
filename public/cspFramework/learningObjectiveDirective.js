@@ -2,6 +2,7 @@ angular.module('newApp')
 .directive('learningObjective', function (cspFramework) {
     return {
         restrict: 'E',
+        transclude: true,
         templateUrl: 'cspFramework/learningObjective.html',
         scope: {
             id: '@'

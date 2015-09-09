@@ -67,15 +67,37 @@ angular.module('newApp')
     };
 
     $scope.onDrop = function (tag, activity) {
-        activity.tags || (activity.tags = []);
-        if (utils.pluck(activity.tags, 'content').indexOf(tag.content) === -1) {
-            var newTag = utils.pick(tag, ['courseId', 'unitId', 'content']);
-            newTag.activityId = activity.id;
-            newTag.activityType = activity.type;
+        var newTag = utils.pick(tag, ['courseId', 'unitId', 'content']);
+        newTag.activityId = activity.id;
+        newTag.activityType = activity.type;
+        if (!utils.find($scope.tags, newTag)) {
             tags.create(newTag).then(function (response) {
-                activity.tags.push(response.data);
+                $scope.tags.push(response.data);
             });
         }
+    };
+
+    $scope.deleteTag = function (tag) {
+        tags.delete(tag).then(function () {
+            $scope.tags.splice($scope.tags.indexOf(tag), 1);
+        });
+    };
+
+    $scope.deleteTagsByContent = function (content) {
+        var tagsToDelete = $scope.tags.filter(function (tag) {
+            return tag.content === content;
+        });
+
+        $modal.open({
+            templateUrl: 'lessonBuilder/confirmTagDeletion.html',
+            controller: function ($scope) {
+                $scope.content = content;
+                $scope.numTags = tagsToDelete.length - 1;
+            },
+            size: 'sm'
+        }).result.then(function () {
+            return tagsToDelete.map($scope.deleteTag);
+        });
     };
 
    $scope.open = function (page_url) {
@@ -103,15 +125,7 @@ angular.module('newApp')
             $scope.module = responses[0].data;
             $scope.lessonItems = responses[1].data;
             countItemTypes($scope.lessonItems);
-            $scope.module.tags = responses[2].data;
-
-            $scope.module.tags.forEach(function (tag) {
-                if (tag.activityId) {
-                    var activity = utils.find($scope.lessonItems, { id: tag.activityId });
-                    activity.tags || (activity.tags = []);
-                    activity.tags.push(tag);
-                }
-            });
+            $scope.tags = responses[2].data;
 
             lessonPlanItems.match($routeParams.id, $routeParams.id2, $scope.module, $scope.lessonItems);
         });

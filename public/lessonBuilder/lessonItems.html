@@ -15,8 +15,10 @@
              ng-drag-data="tag"
              ng-drag-start="toggleDropZones(true)"
              ng-drag-stop="toggleDropZones(false)"
-             ng-repeat="tag in module.tags | unassigned">
-             <learning-objective id="{{tag.content}}" ></learning-objective>
+             ng-repeat="tag in tags | unassigned track by tag._id">
+             <learning-objective id="{{tag.content}}" >
+              <span class="delete-x" ng-click="deleteTagsByContent(tag.content)">x</span>
+             </learning-objective>
            </div>
         </div>
       </div>
@@ -54,7 +56,9 @@
       </td>
       <td>{{contentItem.type}}</td>
       <td>
-        <learning-objective id="{{tag.content}}" ng-repeat="tag in contentItem.tags"></learning-objective>
+        <learning-objective id="{{tag.content}}" ng-repeat="tag in tags | filter:{activityId:contentItem.id} track by tag._id">
+          <span class="delete-x" ng-click="deleteTag(tag)">x</span>
+        </learning-objective>
         <div ng-show="showDropZones" ng-drop="true" ng-drop-success="onDrop($data, contentItem)"></div>
       </td>
     </tr>
