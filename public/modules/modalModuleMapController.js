@@ -11,6 +11,11 @@ angular.module('newApp')
         $scope.bigIdeas = framework;
     });
 
+    $scope.isLOinUnit = function(loID) {
+        // !== -1 => found so return true
+        return $scope.contents.indexOf(loID) !== -1;
+    };
+        
     $scope.toggleLOinUnit = function(loID){
         // see if the lo is already in the list...
         var index = $scope.contents.indexOf(loID);
@@ -20,6 +25,7 @@ angular.module('newApp')
         } else {
             $scope.contents.splice(index, 1);
         }
+        window.event.stopPropagation();
     };
 
     $scope.ok = function () {

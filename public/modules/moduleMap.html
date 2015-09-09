@@ -20,8 +20,8 @@
             <tr>
               <td class="text-left">{{lo.id}} - {{lo.description}}</td>
               <td>
-                <button class="button pull-right" ng-click="toggleLOinUnit(lo.id); isAdded = !isAdded">
-                  {{isAdded ? "Remove" : "Add"}}
+                <button class="button pull-right" ng-click="toggleLOinUnit(lo.id)">
+                  {{isLOinUnit(lo.id) ? "Remove" : "Add"}}
                 </button>
               </td>
             </tr>
