@@ -1,6 +1,14 @@
 <table class="table table-striped">
-	<tr ng-repeat="course in courses">
-		<td>{{course.name}}</td>
-		<td><a href="#/courses/{{course.id}}">{{course.id}}</a></td>
-	</tr>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Number</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="course in courses">
+      <td>{{course.name}}</td>
+      <td><a href="#/courses/{{course.id}}">{{course.id}}</a></td>
+    </tr>
+  </tbody>
 </table>
