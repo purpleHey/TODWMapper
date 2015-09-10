@@ -1,6 +1,9 @@
 angular.module('newApp', ['ngRoute', 'ui.bootstrap', 'ngDraggable'])
 .config(function($routeProvider){
     $routeProvider
+    .when('/', {
+        templateUrl: '/home.html'
+    })
     .when('/csp-framework', {
         templateUrl: '/cspFramework/cspFrameworkHome.html'
     })
@@ -20,5 +23,5 @@ angular.module('newApp', ['ngRoute', 'ui.bootstrap', 'ngDraggable'])
         controller: 'lessonItems',
         templateUrl: '/lessonBuilder/lessonItems.html'
     })
-    .otherwise('/courses');
+    .otherwise('/');
 });
