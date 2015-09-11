@@ -1,22 +1,7 @@
 angular.module('newApp')
 .controller('lessonItems', function(courses, modules, moduleItems, tags, lessonPlanItems, $modal, $q, $scope, $routeParams){
 
-  $scope.radioModel = 'Lesson';
-
-  $scope.matchType = function(query) {
-    return function(contentItem) {
-      if($scope.radioModel === 'All') 
-        return true;
-      else if($scope.radioModel === 'Lesson')
-        return contentItem.type.match('SubHeader');
-      else if($scope.radioModel === 'Quiz')
-        return contentItem.type.match('Quiz');
-      else if($scope.radioModel === 'Assignment')
-        return contentItem.type.match('Assignment');
-      else if($scope.radioModel === 'Discussion')
-        return contentItem.type.match('Discussion');
-    }
-  };
+  $scope.radioModel = 'SubHeader';
 
   function makePageMap(headers) {
     var pageObjs = {};
