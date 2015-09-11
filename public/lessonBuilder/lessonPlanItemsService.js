@@ -3,10 +3,10 @@ angular.module('newApp')
 
   function findTeacherRes(modules, moduleName) {
     for(i = 0; i < modules.length; i++) {
-        // find the module tha has moduleName AND "Teacher" in it.
-        if((modules[i].name.indexOf(moduleName) !== -1) &&
-           (modules[i].name.indexOf("Teacher") !== -1))
-            return modules[i];
+      // find the module tha has moduleName AND "Teacher" in it.
+      if((modules[i].name.indexOf(moduleName) !== -1) &&
+         (modules[i].name.indexOf("Teacher") !== -1))
+        return modules[i];
     }
   }
 
@@ -40,16 +40,16 @@ angular.module('newApp')
                 // using toLowerCasse to make the matching case insensitive.
                 var contentItemTitleStr = activities[j].title.toLowerCase();
                 if(activities[j].type === "SubHeader" &&
-                 (contentItemTitleStr.indexOf(lessonName) !== -1)) {
+                   (contentItemTitleStr.indexOf(lessonName) !== -1)) {
                   activities[j].lessonPlanID = teacherUnitItems[i].id;
-                  activities[j].lessonPlanUrl = teacherUnitItems[i].page_url;
+                activities[j].lessonPlanUrl = teacherUnitItems[i].page_url;
                 }
               }
             }
           }
         }
       }, function(xhr, state, error) {
-            console.log(arguments);
+        console.log(arguments);
       });
     }
   }
