@@ -48,7 +48,7 @@
     <tr ng-repeat="contentItem in filtered = (lessonItems | filter: matchType(query))">
       <td>{{contentItem.title}}</td>
       <td>
-        <button class="btn btn-primary" ng-click="open(contentItem.lessonPlanUrl)">{{contentItem.lessonPlanID}}</button>
+        <button class="btn btn-primary" ng-show="contentItem.lessonPlanUrl" ng-click="open(contentItem.lessonPlanUrl)">{{contentItem.lessonPlanID}}</button>
       </td>
       <td>{{contentItem.type}}</td>
       <td>
