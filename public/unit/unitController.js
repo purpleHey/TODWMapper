@@ -1,5 +1,5 @@
 angular.module('newApp')
-.controller('lessonItems', function(remoteUnit, remoteCourses, remoteTags, lessonPlanItems, $modal, $q, $scope, $routeParams){
+.controller('unit', function(remoteUnit, remoteCourses, remoteTags, lessonPlanItems, $modal, $q, $scope, $routeParams){
 
   $scope.radioModel = 'SubHeader';
 
@@ -104,19 +104,19 @@ angular.module('newApp')
   $scope.loadPage = function(pageNum) {
 
     $q.all([
-      remoteUnit.parent.get(),
+      remoteUnit.parent.parent.get(),
       remoteUnit.get(),
       remoteUnit.child('items').get(),
       remoteTags.search({ unitId: $routeParams.id2 })
     ])
     .then(function(responses) {
       $scope.course = responses[0].data;
-      $scope.module = responses[1].data;
+      $scope.unit = responses[1].data;
       $scope.lessonItems = responses[2].data;
       countItemTypes($scope.lessonItems);
       $scope.tags = responses[3].data;
 
-      lessonPlanItems.match(remoteUnit.parent, $scope.module, $scope.lessonItems);
+      lessonPlanItems.match(remoteUnit.parent, $scope.unit, $scope.lessonItems);
     });
   }
 

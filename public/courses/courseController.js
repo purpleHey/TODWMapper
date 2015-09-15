@@ -1,5 +1,5 @@
 angular.module('newApp')
-.controller('modules', function($modal, $log, $scope, $routeParams, remoteTags, remoteCourse){
+.controller('course', function($modal, $log, $scope, $routeParams, remoteTags, remoteCourse){
 
   $scope.numLOs = 42;
 
@@ -11,18 +11,18 @@ angular.module('newApp')
 
   }).then(function (response) {
 
-    $scope.modules = response.data.filter(function(module) {
+    $scope.units = response.data.filter(function(unit) {
       // -1 => string not found.
-      return (module.name.indexOf("Teacher Resources") === -1);
+      return (unit.name.indexOf("Teacher Resources") === -1);
     });
 
-    // $scope.numUnits = modules.length;
+    // $scope.numUnits = units.length;
 
-    // Now that modules has been attached to the $scope, get the module
+    // Now that units has been attached to the $scope, get the unit
     // metadata and attach the learning objectives to the appropriate 
-    // module based on the moduleID.
-    // NOTE: that since joining the metadata to the module depends on all
-    //       the modules being available to loop through, the server data request
+    // unit based on the unitID.
+    // NOTE: that since joining the metadata to the unit depends on all
+    //       the units being available to loop through, the server data request
     //       either need to be done serially (which is what we're done here inside the
     //       .success block of the previous request), or you have to use promise's to 
     //       syncronize the requests.  If you don't there would be a race condition.
@@ -42,29 +42,29 @@ angular.module('newApp')
     $scope.numLOsAssessed = utils.unique(utils.pluck(quizTags, 'content')).length;
 
     tags.forEach(function(tag) {
-      var module = utils.find($scope.modules, { id: tag.unitId });
+      var unit = utils.find($scope.units, { id: tag.unitId });
 
-      if(module)
-        module.tags = (module.tags || []).concat(tag);
+      if(unit)
+        unit.tags = (unit.tags || []).concat(tag);
     });
   }, function(xhr, status, error) {
     // do something with errors
   });
 
-  $scope.open = function (size, module) {
+  $scope.open = function (size, unit) {
 
     var modalInstance = $modal.open({
       animation: true,
-      templateUrl: 'modules/moduleMap.html',
-      controller: 'modalModuleMap',
+      templateUrl: 'courses/unitMap.html',
+      controller: 'modalUnitMap',
       size: size,
       resolve: {
-        module: function () { return module; }
+        unit: function () { return unit; }
       }
     });
 
     modalInstance.result.then(function (tags) {
-      module.tags = tags;
+      unit.tags = tags;
     }, function () {
       $log.info('Modal canceled at: ' + new Date());
     });

@@ -1,11 +1,11 @@
 angular.module('newApp')
-.controller('modalModuleMap', function($scope, $modalInstance, $routeParams, $q,
-                                       cspFramework, module, remoteTags) {
-  module.tags || (module.tags = []);
+.controller('modalUnitMap', function($scope, $modalInstance, $routeParams, $q,
+                                       cspFramework, unit, remoteTags) {
+  unit.tags || (unit.tags = []);
   var courseId = parseInt($routeParams.id, 10);
-  var originalContents = utils.unique(utils.pluck(module.tags, 'content'));
+  var originalContents = utils.unique(utils.pluck(unit.tags, 'content'));
   $scope.contents = utils.clone(originalContents);
-  $scope.moduleName = module.name;
+  $scope.unitName = unit.name;
  
   cspFramework.all().then(function(framework) {
     $scope.bigIdeas = framework;
@@ -35,14 +35,14 @@ angular.module('newApp')
     }).map(function (content) {
       return {
         courseId: courseId,
-        unitId: module.id,
+        unitId: unit.id,
         content: content
       }
     });
-    var removedTags = module.tags.filter(function (tag) {
+    var removedTags = unit.tags.filter(function (tag) {
       return existingContents.indexOf(tag.content) === -1;
     });
-    var savedTags = module.tags.filter(function (tag) {
+    var savedTags = unit.tags.filter(function (tag) {
       return existingContents.indexOf(tag.content) !== -1;
     });
     // TODO: track creations and deletions in the modal to provide updates
