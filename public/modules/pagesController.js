@@ -1,7 +1,7 @@
 angular.module('newApp')
-.controller('pages', function(pages, page_url, $sce, $modal, $scope, $routeParams, $http){
+.controller('pages', function($sce, $scope, remotePage){
 
-  pages.get($routeParams.id, page_url)
+  remotePage.get()
   .then(function (response) {
     $scope.page = $sce.trustAsHtml(response.data.body);
   })

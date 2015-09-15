@@ -35,7 +35,7 @@
        
     <tbody>
       <tr ng-repeat="module in modules">
-        <td><a href="#/courses/{{course.id}}/module/{{module.id}}">{{module.name}}</a></td>
+        <td><a href="#/courses/{{course.id}}/modules/{{module.id}}">{{module.name}}</a></td>
         <td>{{module.items_count}}</td>
         <td>
           <learning-objective id="{{tag.content}}" ng-repeat="tag in module.tags | unassigned"></learning-objective>
