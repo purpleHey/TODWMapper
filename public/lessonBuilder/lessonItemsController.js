@@ -1,5 +1,5 @@
 angular.module('newApp')
-.controller('lessonItems', function(courses, modules, moduleItems, tags, lessonPlanItems, $modal, $q, $scope, $routeParams){
+.controller('lessonItems', function(remoteUnit, remoteCourses, remoteTags, lessonPlanItems, $modal, $q, $scope, $routeParams){
 
   $scope.radioModel = 'Lesson';
 
@@ -71,14 +71,14 @@ angular.module('newApp')
     newTag.activityId = activity.id;
     newTag.activityType = activity.type;
     if (!utils.find($scope.tags, newTag)) {
-      tags.create(newTag).then(function (response) {
+      remoteTags.create(newTag).then(function (response) {
         $scope.tags.push(response.data);
       });
     }
   };
 
   $scope.deleteTag = function (tag) {
-    tags.delete(tag).then(function () {
+    remoteTags.id(tag._id).delete().then(function () {
       $scope.tags.splice($scope.tags.indexOf(tag), 1);
     });
   };
@@ -100,7 +100,7 @@ angular.module('newApp')
     });
   };
 
-  $scope.open = function (page_url) {
+  $scope.open = function (pageUrl) {
 
     var modalInstance = $modal.open({
       animation: true,
@@ -108,7 +108,9 @@ angular.module('newApp')
       controller: 'pages',
       size: 'lg',
       resolve: {
-        page_url: function () { return page_url; }
+        remotePage: function () {
+          return remoteCourses.id($routeParams.id).child('pages').id(pageUrl);
+        }
       }
     });
   }
@@ -117,10 +119,10 @@ angular.module('newApp')
   $scope.loadPage = function(pageNum) {
 
     $q.all([
-      courses.get($routeParams.id),
-      modules.get($routeParams.id, $routeParams.id2),
-      moduleItems.get($routeParams.id, $routeParams.id2, 1),
-      tags.search({ unitId: $routeParams.id2 })
+      remoteUnit.parent.get(),
+      remoteUnit.get(),
+      remoteUnit.child('items').get(),
+      remoteTags.search({ unitId: $routeParams.id2 })
     ])
     .then(function(responses) {
       $scope.course = responses[0].data;
@@ -129,7 +131,7 @@ angular.module('newApp')
       countItemTypes($scope.lessonItems);
       $scope.tags = responses[3].data;
 
-      lessonPlanItems.match($routeParams.id, $routeParams.id2, $scope.module, $scope.lessonItems);
+      lessonPlanItems.match(remoteUnit.parent, $scope.module, $scope.lessonItems);
     });
   }
 

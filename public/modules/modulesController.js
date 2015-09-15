@@ -1,13 +1,13 @@
 angular.module('newApp')
-.controller('modules', function(courses, modules, tags, $modal, $log, $scope, $routeParams, $http){
+.controller('modules', function($modal, $log, $scope, $routeParams, remoteTags, remoteCourse){
 
   $scope.numLOs = 42;
 
-  courses.get($routeParams.id)
+  remoteCourse.get()
   .then(function (course) {
     $scope.course = course.data;
 
-    return modules.getAll($routeParams.id);
+    return remoteCourse.child('modules').get();
 
   }).then(function (response) {
 
@@ -27,7 +27,7 @@ angular.module('newApp')
     //       .success block of the previous request), or you have to use promise's to 
     //       syncronize the requests.  If you don't there would be a race condition.
 
-    return tags.search();
+    return remoteTags.get();
   }).then(function(response) {
     var tags = response.data;
 

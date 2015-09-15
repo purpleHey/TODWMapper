@@ -1,6 +1,6 @@
 angular.module('newApp')
-.controller('courses', function($scope, courses){
-  courses.getAll()
+.controller('courses', function($scope, remoteCourses){
+  remoteCourses.get()
   .success(function (courses) {
     $scope.courses = courses;
   });

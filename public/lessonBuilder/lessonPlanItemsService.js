@@ -1,5 +1,5 @@
 angular.module('newApp')
-.factory('lessonPlanItems', function($http, modules, moduleItems) {
+.factory('lessonPlanItems', function() {
 
   function findTeacherRes(modules, moduleName) {
     for(i = 0; i < modules.length; i++) {
@@ -11,20 +11,20 @@ angular.module('newApp')
   }
 
   return {
-    match: function(courseID, moduleID, module, activities) {
+    match: function(remoteModules, module, activities) {
       var teacherResModule;
       // Find the teacher Resource unit for the Unit i.e. the unit with the same
       // name as the current unit, with "Teacher Resources" in the name.
 
-      modules.getAll(courseID)
+      remoteModules.get()
       .then(function(response) {
         var units = response.data;
         for(i = 0; i < units.length; i++) {
-          if(units[i].id == moduleID) {
+          if(units[i].id == module.id) {
             teacherResModule = findTeacherRes(units, module.name);
           }
         }
-        return moduleItems.get(courseID, teacherResModule.id, 1)
+        return remoteModules.id(teacherResModule.id).child('items').get()
       }).then(function(retData) {
         var teacherUnitItems = retData.data;
         for(i = 0; i < teacherUnitItems.length; i++) {
