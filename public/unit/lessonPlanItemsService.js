@@ -1,17 +1,17 @@
 angular.module('newApp')
 .factory('lessonPlanItems', function() {
 
-  function findTeacherRes(modules, moduleName) {
-    for(i = 0; i < modules.length; i++) {
-      // find the module tha has moduleName AND "Teacher" in it.
-      if((modules[i].name.indexOf(moduleName) !== -1) &&
-         (modules[i].name.indexOf("Teacher") !== -1))
-        return modules[i];
+  function findTeacherRes(units, unitName) {
+    for(i = 0; i < units.length; i++) {
+      // find the unit tha has unitName AND "Teacher" in it.
+      if((units[i].name.indexOf(unitName) !== -1) &&
+         (units[i].name.indexOf("Teacher") !== -1))
+        return units[i];
     }
   }
 
   return {
-    match: function(remoteModules, module, activities) {
+    match: function(remoteModules, unit, activities) {
       var teacherResModule;
       // Find the teacher Resource unit for the Unit i.e. the unit with the same
       // name as the current unit, with "Teacher Resources" in the name.
@@ -20,8 +20,8 @@ angular.module('newApp')
       .then(function(response) {
         var units = response.data;
         for(i = 0; i < units.length; i++) {
-          if(units[i].id == module.id) {
-            teacherResModule = findTeacherRes(units, module.name);
+          if(units[i].id == unit.id) {
+            teacherResModule = findTeacherRes(units, unit.name);
           }
         }
         return remoteModules.id(teacherResModule.id).child('items').get()

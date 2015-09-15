@@ -24,11 +24,11 @@ angular.module('newApp', ['ngRoute', 'ui.bootstrap', 'ngDraggable'])
     templateUrl: '/courses/courses.html'
   }))
   .when('/courses/:id', withDefaultRemote('remoteCourse', {
-    controller: 'modules',
+    controller: 'course',
     templateUrl: '/courses/course.html'
   }))
   .when('/courses/:id/modules/:id2', withDefaultRemote('remoteUnit', {
-    controller: 'lessonItems',
+    controller: 'unit',
     templateUrl: '/unit/unit.html'
   }))
   .otherwise('/');
