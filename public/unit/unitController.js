@@ -74,7 +74,7 @@ angular.module('newApp')
     });
 
     $modal.open({
-      templateUrl: 'lessonBuilder/confirmTagDeletion.html',
+      templateUrl: 'unit/confirmTagDeletion.html',
       controller: function ($scope) {
         $scope.content = content;
         $scope.numTags = tagsToDelete.length - 1;
@@ -89,7 +89,7 @@ angular.module('newApp')
 
     var modalInstance = $modal.open({
       animation: true,
-      templateUrl: 'modules/page.html',
+      templateUrl: 'unit/page.html',
       controller: 'pages',
       size: 'lg',
       resolve: {

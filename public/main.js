@@ -23,17 +23,13 @@ angular.module('newApp', ['ngRoute', 'ui.bootstrap', 'ngDraggable'])
     controller: 'courses',
     templateUrl: '/courses/courses.html'
   }))
-  .when('/courses/lesson', {
-    controller: 'lessonBuilder',
-    templateUrl: '/lessonBuilder/lessonBuilder.html'
-  })
   .when('/courses/:id', withDefaultRemote('remoteCourse', {
     controller: 'modules',
-    templateUrl: '/modules/modules.html'
+    templateUrl: '/courses/course.html'
   }))
   .when('/courses/:id/modules/:id2', withDefaultRemote('remoteUnit', {
     controller: 'lessonItems',
-    templateUrl: '/lessonBuilder/lessonItems.html'
+    templateUrl: '/unit/unit.html'
   }))
   .otherwise('/');
 });
