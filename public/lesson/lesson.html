@@ -1,0 +1,15 @@
+<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+<div class='panel panel-info'>
+  <div class='panel-heading'>
+    <h3><a href="#/courses/{{courseID}}/modules/{{unitID}}">'{{unitID}}'</a>{{lesson.title}} - Learning Objectives</h3>
+  </div>
+  <div class='panel-body'>
+    <learning-objective ng-repeat="tag in tags" expanded id="{{tag.content}}"></learning-objective>
+    <h1 ng-show="!tags.length">No Learning objectives set</h1>
+  </div>
+</div>
+<h1 style='display:inline'>Lesson Plan</h1>
+<span>
+  <button class="btn btn-primary pull-right" type="button" ng-click="save()">Create</button>
+</span>
+<text-angular ng-model="page.body"></text-angular>

@@ -1,4 +1,4 @@
-angular.module('newApp', ['ngRoute', 'ui.bootstrap', 'ngDraggable'])
+angular.module('newApp', ['ngRoute', 'ui.bootstrap', 'ngDraggable', 'textAngular'])
 .config(function($routeProvider){
 
   function withDefaultRemote (name, route) {
@@ -31,5 +31,9 @@ angular.module('newApp', ['ngRoute', 'ui.bootstrap', 'ngDraggable'])
     controller: 'unit',
     templateUrl: '/unit/unit.html'
   }))
+  .when('/courses/:id/modules/:id2/activity/:activityID', {
+    controller: 'lesson',
+    templateUrl: '/lesson/lesson.html'
+  })
   .otherwise('/');
 });

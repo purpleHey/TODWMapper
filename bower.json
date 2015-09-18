@@ -5,6 +5,7 @@
     "angular-route": "~1.4.4",
     "angular": "~1.4.4",
     "bootstrap": "~3.3.5",
-    "ngDraggable": "92bacff5caeb87413fecf641b31cde8b37322bae"
+    "ngDraggable": "92bacff5caeb87413fecf641b31cde8b37322bae",
+    "textAngular": "~1.4.5"
   }
 }
