@@ -51,47 +51,12 @@ angular.module('newApp')
     $scope.showDropZones = isShown;
   };
 
-  function onlyTagWithContent (content) {
-    return $scope.tags.filter(function (tag) {
-      return tag.content === content;
-    }).length === 1;
-  }
-
   $scope.onDrop = function (tag, activity) {
-    var newTag;
-    var matchingTag = utils.find($scope.tags, { content: tag.content, activityId: activity.id });
-
-    function extendWithActivity (tag) {
-      return utils.extend(tag, {
-        activityId: activity.id,
-        activityType: activity.type
-      });
-    }
-
-    if (matchingTag) return;
-
-    if (onlyTagWithContent(tag.content) && !tag.activityId) {
-      remoteTags.id(tag._id).update(extendWithActivity(tag));
-    } else {
-      newTag = utils.pick(tag, ['content', 'courseId', 'unitId']);
-      remoteTags.create(extendWithActivity(newTag)).then(function (response) {
-        $scope.tags.push(response.data);
-      });
-    }
+    remoteTags.assign(tag, activity, $scope.tags);
   };
 
   $scope.deleteTag = function (tag) {
-    var remoteTag = remoteTags.id(tag._id);
-    if (onlyTagWithContent(tag.content)) {
-      remoteTag.update(utils.extend(tag, {
-        activityId: null,
-        activityType: null
-      }));
-    } else {
-      remoteTag.delete().then(function () {
-        $scope.tags.splice($scope.tags.indexOf(tag), 1);
-      });
-    }
+    remoteTags.unassign(tag, $scope.tags);
   };
 
   $scope.deleteTagsByContent = function (content) {
