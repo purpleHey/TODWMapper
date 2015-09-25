@@ -49,7 +49,7 @@ angular.module('newApp')
     removedTags.forEach(function (tag) {
       remoteTags.id(tag._id).delete()
     });
-    $q.all(unsavedTags.map(remoteTags.create)).then(function (newTags) {
+    $q.all(unsavedTags.map(remoteTags.create, remoteTags)).then(function (newTags) {
       $modalInstance.close(utils.pluck(newTags, 'data').concat(savedTags));
     });
   };

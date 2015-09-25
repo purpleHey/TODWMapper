@@ -29,7 +29,7 @@ angular.module('newApp')
 
   ['get', 'post', 'put', 'delete'].forEach(function (method) {
     remote[method] = function () {
-      return $http[method].apply($http, [this.path].concat(arguments));
+      return $http[method].apply($http, [this.path].concat([].slice.call(arguments)));
     };
   });
 
