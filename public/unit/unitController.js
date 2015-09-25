@@ -51,21 +51,47 @@ angular.module('newApp')
     $scope.showDropZones = isShown;
   };
 
+  function onlyTagWithContent (content) {
+    return $scope.tags.filter(function (tag) {
+      return tag.content === content;
+    }).length === 1;
+  }
+
   $scope.onDrop = function (tag, activity) {
-    var newTag = utils.pick(tag, ['courseId', 'unitId', 'content']);
-    newTag.activityId = activity.id;
-    newTag.activityType = activity.type;
-    if (!utils.find($scope.tags, newTag)) {
-      remoteTags.create(newTag).then(function (response) {
+    var newTag;
+    var matchingTag = utils.find($scope.tags, { content: tag.content, activityId: activity.id });
+
+    function extendWithActivity (tag) {
+      return utils.extend(tag, {
+        activityId: activity.id,
+        activityType: activity.type
+      });
+    }
+
+    if (matchingTag) return;
+
+    if (onlyTagWithContent(tag.content) && !tag.activityId) {
+      remoteTags.id(tag._id).update(extendWithActivity(tag));
+    } else {
+      newTag = utils.pick(tag, ['content', 'courseId', 'unitId']);
+      remoteTags.create(extendWithActivity(newTag)).then(function (response) {
         $scope.tags.push(response.data);
       });
     }
   };
 
   $scope.deleteTag = function (tag) {
-    remoteTags.id(tag._id).delete().then(function () {
-      $scope.tags.splice($scope.tags.indexOf(tag), 1);
-    });
+    var remoteTag = remoteTags.id(tag._id);
+    if (onlyTagWithContent(tag.content)) {
+      remoteTag.update(utils.extend(tag, {
+        activityId: null,
+        activityType: null
+      }));
+    } else {
+      remoteTag.delete().then(function () {
+        $scope.tags.splice($scope.tags.indexOf(tag), 1);
+      });
+    }
   };
 
   $scope.deleteTagsByContent = function (content) {
@@ -77,11 +103,15 @@ angular.module('newApp')
       templateUrl: 'unit/confirmTagDeletion.html',
       controller: function ($scope) {
         $scope.content = content;
-        $scope.numTags = tagsToDelete.length - 1;
+        $scope.numTags = tagsToDelete.length;
       },
       size: 'sm'
     }).result.then(function () {
-      return tagsToDelete.map($scope.deleteTag);
+      return tagsToDelete.map(function (tag) {
+        return remoteTags.id(tag._id).delete().then(function () {
+          $scope.tags.splice($scope.tags.indexOf(tag), 1);
+        });
+      });
     });
   };
 

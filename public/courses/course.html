@@ -38,7 +38,7 @@
         <td><a href="#/courses/{{course.id}}/modules/{{unit.id}}">{{unit.name}}</a></td>
         <td>{{unit.items_count}}</td>
         <td>
-          <learning-objective id="{{tag.content}}" ng-repeat="tag in unit.tags | unassigned"></learning-objective>
+          <learning-objective id="{{tag.content}}" ng-repeat="tag in unit.tags | unique:'content' | orderBy:'content' track by tag._id"></learning-objective>
         </td>
         <td>
           <button class="btn btn-default" ng-click="open('lg', unit)">Edit LO's</button>

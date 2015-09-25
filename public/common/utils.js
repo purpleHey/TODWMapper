@@ -13,6 +13,13 @@
     }
   }
 
+  function extend (destination, source) {
+    Object.keys(source).forEach(function (key) {
+      destination[key] = source[key];
+    });
+    return destination;
+  }
+
   function find (array, params) {
     var i = 0;
     while (array[i] && !matches(params, array[i])) {
@@ -40,14 +47,23 @@
     });
   }
 
-  function unique (array) {
-    return array.filter(function (element, i) {
-      return array.indexOf(element) === i;
-    });
+  function unique (array, property) {
+    var plucked;
+    if (property === undefined) {
+      return array.filter(function (element, i) {
+        return array.indexOf(element) === i;
+      });
+    } else {
+      plucked = pluck(array, property);
+      return array.filter(function (element, i) {
+        return plucked.indexOf(element[property]) === i;
+      });
+    }
   }
 
   window.utils = {
     clone: clone,
+    extend: extend,
     find: find,
     pick: pick,
     pluck: pluck,
